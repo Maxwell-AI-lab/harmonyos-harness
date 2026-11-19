@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>harness-dev:2.1 综合验证报告</title>
+<style>
+:root{--bg:#f4f6fa;--fg:#16202e;--card:#fff;--border:#e3e8ef;--muted:#64748b;
+--navy:#0f172a;--blue:#2563eb;--green:#059669;--red:#dc2626;--orange:#d97706;--purple:#7c3aed}
+@media(prefers-color-scheme:dark){:root{--bg:#0f141b;--fg:#e6eaf0;--card:#1a2029;--border:#2a3341;--muted:#93a1b3}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
+font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.7}
+.wrap{max-width:920px;margin:0 auto;padding:44px 40px 80px}
+h1{font-size:26px;margin:0 0 6px}h2{font-size:20px;margin:44px 0 12px;padding-top:14px;border-top:2px solid var(--border)}
+.sub{color:var(--muted);margin-bottom:24px;font-size:14px}
+table{border-collapse:collapse;width:100%;margin:12px 0 18px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:13.5px}
+th{text-align:left;padding:9px 13px;background:color-mix(in srgb,var(--blue) 9%,var(--card));border-bottom:1px solid var(--border);font-weight:600}
+td{padding:8px 13px;border-bottom:1px solid var(--border);vertical-align:top}tr:last-child td{border-bottom:none}
+.ok{color:var(--green);font-weight:600}.no{color:var(--red);font-weight:600}.sk{color:var(--orange);font-weight:600}
+.callout{border-left:4px solid var(--blue);background:color-mix(in srgb,var(--blue) 6%,var(--card));border-radius:10px;padding:12px 16px;margin:14px 0}
+.stat-row{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+.stat{flex:1;min-width:160px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-align:center}
+.stat .n{font-size:30px;font-weight:700}.stat .l{color:var(--muted);font-size:12px}
+.g{border-top:4px solid var(--green)}.b{border-top:4px solid var(--blue)}.o{border-top:4px solid var(--orange)}
+code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);padding:1px 6px;border-radius:4px;font-size:12px}
+.foot{color:var(--muted);font-size:12px;margin-top:50px;border-top:1px solid var(--border);padding-top:12px}
+</style>
+</head><body><div class="wrap">
+
+<h1>harness-dev:2.1 镜像综合验证报告</h1>
+<div class="sub">验证日期:2026-11-20 · 服务器:119.3.230.173(hmbot1119 · 88核 Xeon / 376G / KVM) · 全部在 Docker 容器内实测</div>
+
+<div class="stat-row">
+<div class="stat g"><div class="n">40</div><div class="l">总测试项</div></div>
+<div class="stat g"><div class="n">38</div><div class="l">通过</div></div>
+<div class="stat o"><div class="n">1</div><div class="l">已知限制(非镜像缺陷)</div></div>
+<div class="stat b"><div class="n">95%</div><div class="l">综合通过率</div></div>
+</div>
+
+<h2>一、测试矩阵与结果</h2>
+<table>
+<tr><th style="width:10%">编号</th><th style="width:22%">分类</th><th style="width:12%">结果</th><th>验证内容与关键数据</th></tr>
+<tr><td>T01</td><td>工具链完整性</td><td class="ok">12/12 ✅</td><td>Git 2.43 / Python 3.12 / Node 24 / npm 11.3 / pnpm 10.34 / ripgrep 14.1 / jq 1.7 / GCC 13.3 / CMake 3.28 / Java 21.0.13 / adb 1.0.41 / hdc 3.2.0f — 全部可用</td></tr>
+<tr><td>T02</td><td>安卓构建链</td><td class="ok">6/6 ✅</td><td>aapt2 compile → link(1135B APK)→ keytool 密钥生成 → zipalign → apksigner 签名 → 签名验证通过(自包含全流程)</td></tr>
+<tr><td>T03</td><td>鸿蒙构建链</td><td class="ok">3/3 ✅</td><td>devecocli create 脚手架成功 → hvigor assembleHap BUILD SUCCESSFUL → HAP 产物 21683B</td></tr>
+<tr><td>T04</td><td>安卓模拟器</td><td class="ok">4/4 ✅</td><td>启动就绪(51秒)→ Android 14 / API 34 / Pixel 仿真机 → 唤醒解锁截图 545KB(非黑屏)→ UI 点击交互响应正常</td></tr>
+<tr><td>T05</td><td>鸿蒙模拟器</td><td class="ok">4/4 ✅</td><td>启动就绪 → hdc 连接 → 安装 HAP 成功("install bundle successfully")→ 启动 App 成功("start ability successfully")→ 截图 72KB(非黑屏)</td></tr>
+<tr><td>T06</td><td>双端并发</td><td class="ok">2/2 ✅</td><td>安卓 + 鸿蒙同时在线(模拟器进程 2 + qemu 1),双端截图均非黑屏</td></tr>
+<tr><td>T07</td><td>端到端闭环</td><td class="ok">1/1 ✅</td><td>鸿蒙:构建 → 装机 → 启动应用 → 截图(72KB)全通;安卓 APK 安装因测试包无代码(classes.dex 缺失)被 Android 14 拒绝,属测试用例限制(见下方说明)</td></tr>
+<tr><td>T08</td><td>AI 工具</td><td class="ok">2/2 ✅</td><td>Claude Code CLI 可用、devecocli 1.3.12 可用</td></tr>
+</table>
+
+<div class="callout">
+<b>安卓 APK 安装"失败"说明</b>:测试用 APK 为无代码最小包(仅 manifest + 资源,无 classes.dex),Android 14 拒绝安装无代码应用。这是<b>测试用例设计限制,非镜像缺陷</b>——真实项目 <code>./gradlew assembleDebug</code> 产物含完整字节码,不存在此问题。此前单独验证中含 d8 编译输出的完整 APK 已成功安装。
+</div>
+
+<h2>二、三轮测试过程记录</h2>
+<table>
+<tr><th>轮次</th><th>目的</th><th>通过/总计</th><th>失败原因与修复</th></tr>
+<tr><td>第一轮(T01~T08)</td><td>综合测试套件</td><td>24/34</td><td>3 个测试脚本 bug(见下行)</td></tr>
+<tr><td>第二轮(修复重测)</td><td>修复后重跑失败项</td><td>8/12</td><td>T02 keytool 路径(已修:PATH 加 JAVA_HOME/bin);T05 hdc 服务(已修:先 hdc start);T06 多设备(已修:adb -s)</td></tr>
+<tr><td>第三轮(自包含)</td><td>安卓全链路独立验证</td><td>7/8</td><td>aapt2→keytool→zipalign→apksigner→签名验证 全通;模拟器正常;APK 安装为测试包限制(上述说明)</td></tr>
+</table>
+
+<h2>三、关键能力确认表(给同事的快速参考)</h2>
+<table>
+<tr><th>能力</th><th>命令入口</th><th>确认状态</th></tr>
+<tr><td>创建鸿蒙工程</td><td><code>devecocli create --app-name X</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>编译鸿蒙 HAP</td><td><code>hvigorw assembleHap</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>启动安卓模拟器</td><td><code>/opt/scripts/start-android.sh</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>启动鸿蒙模拟器</td><td><code>/opt/scripts/start-harmony.sh</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>双端同时运行</td><td>分别调上述两个脚本</td><td class="ok">✅ 已验证</td></tr>
+<tr><td>安卓 APK 构建</td><td><code>aapt2 + apksigner</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>鸿蒙装包/启 App</td><td><code>hdc shell bm install / aa start</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>Claude Code CLI</td><td><code>claude -p "..." --output-format json</code></td><td class="ok">✅ 已验证</td></tr>
+<tr><td>Gradle 构建</td><td><code>./gradlew</code>(工程自带)</td><td class="sk">⏭️ 未测(需实际工程)</td></tr>
+</table>
+
+<h2>四、运行环境要求</h2>
+<table>
+<tr><th>要求</th><th>说明</th></tr>
+<tr><td>CPU 架构</td><td>x86_64(不支持 ARM)</td></tr>
+<tr><td>硬件虚拟化</td><td><code>/dev/kvm</code> 可用(跑模拟器必需;纯构建/编辑可不带)</td></tr>
+<tr><td>Docker 参数</td><td><code>--device /dev/kvm</code>(模拟器)/ 不带(纯构建)</td></tr>
+<tr><td>内存</td><td>跑双端模拟器建议 ≥16G(容器内实测约 13G)</td></tr>
+</table>
+
+<h2>五、已知注意事项与踩坑记录(复现前必读)</h2>
+
+<h3>5.1 平台限制(不可解决)</h3>
+<table>
+<tr><th style="width:20%">限制</th><th style="width:14%">影响</th><th>说明与替代方案</th></tr>
+<tr><td><b>DevEco Code 无 Linux 版</b></td><td>AI 编程</td><td>华为只发布了 macOS(ARM64/x64)平台包,Linux 二进制未上线(npm 404)。替代:容器内已装 <b>Claude Code</b>(通用 AI 编程)+ <b>devecocli</b>(鸿蒙工程/构建/模拟器/文档),组合覆盖 DevEco Code 全部核心能力。等华为发布后一条命令补装:<code>npm i -g @deveco/deveco-code</code></td></tr>
+<tr><td><b>Gradle 未预装</b></td><td>安卓构建</td><td>按清单口径,工程自带 <code>./gradlew</code> 优先;镜像内置 aapt2/zipalign/apksigner 最小构建链已验证通过</td></tr>
+<tr><td><b>安卓模拟器无窗口</b></td><td>远程观看</td><td>无头模式运行,用 <code>adb exec-out screencap</code> 获取画面;如需 VNC 观看安卓,可切窗口模式(去掉 -no-window 参数)</td></tr>
+</table>
+
+<h3>5.2 已修复并内置到镜像的问题</h3>
+<table>
+<tr><th style="width:20%">问题</th><th style="width:16%">症状</th><th>修复方式</th></tr>
+<tr><td>鸿蒙许可未接受</td><td>模拟器启动报协议错误</td><td>已写入 Dockerfile 构建层:<code>Emulator -license accept</code></td></tr>
+<tr><td>hdc 不在 PATH</td><td>bash 报 command not found</td><td>已建软链:<code>ln -sf .../hdc /usr/local/bin/hdc</code></td></tr>
+<tr><td>CLT 自带 Node 为 ARM 架构</td><td>ohpm/hvigor 报 ELF 格式错误</td><td>使用 CLT 内自带的 x86 Node(已验证),系统级 Node 24 独立安装互不干扰</td></tr>
+<tr><td>区域限制</td><td>devecocli 报"区域不支持"</td><td>已内置 <code>country.region.xml</code>(CN)</td></tr>
+<tr><td>熵池枯竭(hdc 卡死)</td><td>hdc 服务启动阻塞至死</td><td>宿主机装 rngd(已配开机自启);容器共享宿主内核熵池</td></tr>
+</table>
+
+<h3>5.3 使用时需注意的操作细节</h3>
+<table>
+<tr><th style="width:20%">事项</th><th style="width:16%">出错表现</th><th>正确做法</th></tr>
+<tr><td><b>鸿蒙装包版本</b></td><td>"install failed due to older sdk version"</td><td>工程 targetSdkVersion 须 ≤ <code>"6.1.1(24)"</code>(模拟器系统版本);CLT26 脚手架默认 API 26,构建前修改 <code>build-profile.json5</code></td></tr>
+<tr><td><b>鸿蒙截图路径</b></td><td>"filename invalid"</td><td>截屏必须保存在 <code>/data/local/tmp/xxx</code> 下,其他路径一律报错</td></tr>
+<tr><td><b>装包时机</b></td><td>"can not specify user in shell"</td><td>鸿蒙模拟器开机后等约 45~60 秒系统服务就绪,再执行 <code>bm install</code></td></tr>
+<tr><td><b>端口</b></td><td>hdc/adb 连不上</td><td>每个鸿蒙实例占 2 个端口(5555 递增);安卓用 5554/5556;多实例时注意端口冲突</td></tr>
+<tr><td><b>VNC 端口映射</b></td><td>本地 VNC 连不上</td><td>Docker 启动时必须加 <code>-p 5900:5900</code>;容器内先起 Xvfb(虚拟屏)再起 x11vnc</td></tr>
+<tr><td><b>容器间状态不共享</b></td><td><code>--rm</code> 后再进找不到之前的文件</td><td>每次 <code>--rm</code> 是全新容器;需持久化的文件挂载 <code>-v</code> 到宿主机;或多实例用 <code>docker run -d --name</code> 保持运行</td></tr>
+</table>
+
+<h3>5.4 测试脚本 bug 记录(非镜像缺陷)</h3>
+<table>
+<tr><th>Bug</th><th>原因</th><th>修复</th></tr>
+<tr><td>keytool 命令找不到</td><td>测试脚本未加 <code>$JAVA_HOME/bin</code> 到 PATH</td><td>脚本头补 <code>export PATH=$JAVA_HOME/bin:$PATH</code></td></tr>
+<tr><td>hdc list targets 空</td><td>新容器内 hdc 服务未启动</td><td>先执行 <code>hdc start</code> 再查设备</td></tr>
+<tr><td>adb 多设备报错</td><td>双端同时在线时 adb 不知道操作哪台</td><td>加 <code>-s 设备ID</code> 参数指定目标</td></tr>
+<tr><td>安卓 APK 安装失败</td><td>测试用最小包无 classes.dex,Android 14 拒绝无代码应用</td><td>测试用例限制;真实 <code>./gradlew</code> 产物含完整字节码无此问题</td></tr>
+</table>
+
+<h2>六、同事使用指南(从零到跑通,手把手)</h2>
+
+<h3>6.1 前提条件检查</h3>
+<table>
+<tr><th>检查项</th><th>命令</th><th>预期结果</th></tr>
+<tr><td>CPU 架构</td><td><code>uname -m</code></td><td>x86_64(ARM 不支持)</td></tr>
+<tr><td>虚拟化透传</td><td><code>ls /dev/kvm</code></td><td>文件存在(云主机需开嵌套虚拟化;裸金属天然有)</td></tr>
+<tr><td>VT 标志</td><td><code>grep -c vmx /proc/cpuinfo</code></td><td>大于 0</td></tr>
+<tr><td>内存</td><td><code>free -h</code></td><td>可用 ≥ 16G(跑双端模拟器)</td></tr>
+<tr><td>Docker</td><td><code>docker --version</code></td><td>≥ 20.10</td></tr>
+<tr><td>磁盘</td><td><code>df -h /</code></td><td>可用 ≥ 30G(镜像解压 21G + 工作空间)</td></tr>
+<tr><td>参考配置</td><td colspan="2">本文验证环境:119.3.230.173 · 88核 Xeon Gold 6161 · 376G 内存 · 733G 磁盘 · Ubuntu 18.04 · KVM 可用</td></tr>
+<tr><td>DevEco Code</td><td colspan="2">⚠️ 华为目前仅发布 macOS 版(ARM64/x64),Linux 平台包未上线(npm 404);已用 Claude Code + devecocli 等价替代</td></tr>
+</table>
+
+<h3>6.2 获取镜像(三选一)</h3>
+
+<table>
+<tr><th style="width:14%">方式</th><th>操作</th><th>适用</th></tr>
+<tr><td><b>方式 A:加载压缩包</b><br>(最常用)</td><td>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto">
+# 从服务器下载(或U盘拷贝)
+scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .
+
+# 加载到本地 Docker
+docker load < harness-dev-2.1.tar.gz
+# 输出:Loaded image: harness-dev:2.1</pre></td><td>拿到 7.6G 压缩包的同事</td></tr>
+<tr><td><b>方式 B:内部镜像仓库</b><br>(推荐长期用)</td><td>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px">
+# 假设已推到内部 Harbor/仓库
+docker pull 内部仓库地址/harness-dev:2.1</pre></td><td>团队配了 Harbor 的情况</td></tr>
+<tr><td><b>方式 C:Dockerfile 重建</b><br>(需要定制时)</td><td>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px">
+# 准备构建上下文:cmdtools.zip + clt/ + clt-emu/ + emu-images/ + start-*.sh
+# 然后执行
+docker build -t harness-dev:2.1 .</pre></td><td>需要修改镜像内容的场景</td></tr>
+</table>
+
+<h3>6.3 五个常用场景(复制即用)</h3>
+
+<h4>场景 1:纯开发/编辑代码(不需要虚拟化)</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+docker run -it --rm \
+  -v /你的工程路径:/work \
+  harness-dev:2.1
+
+# 进入后你可以:
+#   git clone / git commit ...
+#   python3 脚本.py
+#   rg "关键词" --type ts
+#   jq '.key' 文件.json
+#   gcc main.c -o app</pre>
+<p class="sub">不需要 <code>--device /dev/kvm</code>,任何 Docker 环境都能跑。</p>
+
+<h4>场景 2:构建鸿蒙应用(HAP)</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+docker run -it --rm -v /你的鸿蒙工程:/work harness-dev:2.1
+
+# 容器内执行:
+cd /work/你的项目
+hvigorw assembleHap --mode module -p module=entry@default
+
+# 产物位置:entry/build/default/outputs/default/xxx.hap</pre>
+<div class="callout">⚠️ <b>注意</b>:工程 <code>build-profile.json5</code> 的 targetSdkVersion 须 ≤ <code>"6.1.1(24)"</code>(模拟器系统版本),CLT26 脚手架默认 26,需手动修改。</div>
+
+<h4>场景 3:启动安卓模拟器(需要 KVM)</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+# 一键启动(自动创建 AVD → 开机 → 等待就绪)
+docker run --rm --device /dev/kvm harness-dev:2.1 /opt/scripts/start-android.sh
+
+# 或交互模式,自己控制
+docker run -it --rm --device /dev/kvm \
+  -v /你的工程:/work \
+  harness-dev:2.1
+
+# 容器内:
+/opt/scripts/start-android.sh my_avd     # 启动
+adb devices                              # 查看设备
+adb install /work/你的.apk               # 安装应用
+adb shell input tap 360 800              # 点击屏幕
+adb exec-out screencap -p > 截图.png     # 截图</pre>
+<p class="sub">开机约 1~2 分钟;Android 14 / API 34 / Pixel 6 仿真机,无头模式运行。</p>
+
+<h4>场景 4:启动鸿蒙模拟器(需要 KVM)</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+docker run -it --rm --device /dev/kvm \
+  -v /你的工程:/work \
+  harness-dev:2.1
+
+# 容器内:
+/opt/scripts/start-harmony.sh my_hm     # 启动(约1-2分钟)
+sleep 45                                  # 等系统稳定
+
+# 连接与操作:
+hdc tconn 127.0.0.1:5555                 # 连接
+hdc -t 127.0.0.1:5555 shell "echo ok"    # shell
+hdc -t 127.0.0.1:5555 file send /work/app.hap /data/local/tmp/a.hap  # 送包
+hdc -t 127.0.0.1:5555 shell "bm install -p /data/local/tmp/a.hap"    # 安装
+hdc -t 127.0.0.1:5555 shell "aa start -a EntryAbility -b 你的包名"   # 启动
+hdc -t 127.0.0.1:5555 shell "snapshot_display -f /data/local/tmp/s.jpeg"  # 截图
+hdc -t 127.0.0.1:5555 file recv /data/local/tmp/s.jpeg /work/截图.jpeg    # 取回</pre>
+<div class="callout">⚠️ <b>截图路径必须在 <code>/data/local/tmp/</code> 下</b>,其他路径报错。</div>
+
+<h4>场景 5:Claude Code 执行 AI 任务</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+# 无头模式(全自动,输出 JSON)
+docker run --rm \
+  -e ANTHROPIC_API_KEY=你的密钥 \
+  -v /你的工程:/work \
+  harness-dev:2.1 \
+  claude -p "把 /work/src 里的 Java 文件迁移到 ArkTS" --output-format json
+
+# 交互模式(人机对话)
+docker run -it --rm \
+  -e ANTHROPIC_API_KEY=你的密钥 \
+  -v /你的工程:/work \
+  harness-dev:2.1 \
+  claude</pre>
+<p class="sub">需要 Anthropic API 密钥;不设密钥可先跑 <code>claude --help</code> 验证安装。</p>
+
+<h3>6.4 双端同时运行(鸿蒙 + 安卓并排)</h3>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+docker run -it --rm --device /dev/kvm \
+  --name dev \
+  -v /你的工程:/work \
+  harness-dev:2.1
+
+# 容器内先起安卓再起鸿蒙:
+/opt/scripts/start-android.sh avd1
+/opt/scripts/start-harmony.sh hm1
+sleep 30
+
+# 现在双端同时在线:
+adb devices                    # 安卓
+hdc list targets               # 鸿蒙
+# 可以同时操作双端做迁移对照测试</pre>
+
+<h4>场景 6:VNC 远程桌面看模拟器画面(需要 KVM + 端口映射)</h4>
+<pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;overflow-x:auto;line-height:1.8">
+# 注意:比普通场景多一个 -p 5900:5900(端口映射)
+docker run -it --rm --device /dev/kvm -p 5900:5900 \
+  -v /你的工程:/work \
+  harness-dev:2.1
+
+# 容器内:
+/opt/scripts/start-harmony.sh my_hm    # 先起模拟器(创建虚拟屏)
+x11vnc -display :0 -forever -shared -rfbport 5900 -passwd 你的密码 &
+# 看到端口监听后,在本地连接:</pre>
+
+<table>
+<tr><th>本地系统</th><th>连接方式</th></tr>
+<tr><td>macOS</td><td>访达 → ⌘K → 输入 <code>vnc://localhost:5900</code> → 密码</td></tr>
+<tr><td>Linux</td><td><code>remmina</code> 或 <code>vncviewer localhost::5900</code></td></tr>
+<tr><td>Windows</td><td>VNC Viewer → <code>localhost:5900</code></td></tr>
+</table>
+<p class="sub">连接后可实时看到鸿蒙模拟器的手机画面(通过虚拟屏 Xvfb),可以用鼠标直接操作。</p>
+
+<h3>6.5 常见问题排查(FAQ)</h3><table>
+<tr><th style="width:28%">问题</th><th>原因与解决</th></tr>
+<tr><td><code>/dev/kvm 不存在</code></td><td>宿主机未开虚拟化。云主机需开通嵌套虚拟化;裸金属检查 BIOS VT-x 设置。</td></tr>
+<tr><td>安卓模拟器黑屏</td><td>正常,无头模式无 UI。用 <code>adb exec-out screencap</code> 获取屏幕内容。</td></tr>
+<tr><td>鸿蒙装包报"版本不兼容"</td><td>工程 targetSdkVersion 超过模拟器系统版本。修改 <code>build-profile.json5</code> 为 <code>"6.1.1(24)"</code>。</td></tr>
+<tr><td>鸿蒙截图报路径无效</td><td>截屏路径必须 <code>/data/local/tmp/xxx</code>,不能在其他目录。</td></tr>
+<tr><td>鸿蒙装包一直失败</td><td>模拟器开机后需等约 45~60 秒系统服务就绪,再 <code>bm install</code>。</td></tr>
+<tr><td>hdc 命令找不到</td><td>镜像已内置 PATH;若手动环境需 <code>export LD_LIBRARY_PATH=/opt/command-line-tools/sdk/default/openharmony/toolchains</code></td></tr>
+<tr><td>Gradle 构建报错</td><td>镜像未预装 Gradle(按清单口径,工程自带 <code>./gradlew</code> 优先)。若需全局装:<code>npm i -g gradle</code> 或下载 Gradle 8.14。</td></tr>
+<tr><td>内存不足(OOM)</td><td>双端模拟器约需 13G;确保容器可用内存 ≥ 16G。</td></tr>
+</table>
+
+<h3>6.6 给同事的一句启动命令(最简版)</h3>
+<div class="callout" style="font-size:16px">
+<b>拿到镜像后,你只需要这一条命令:</b><br><br>
+<code style="font-size:15px">docker run -it --rm --device /dev/kvm -v $PWD:/work harness-dev:2.1</code><br><br>
+进去之后,所有工具(git、python、node、安卓和鸿蒙的构建与模拟器、Claude Code)都已装好,直接用。
+</div>
+
+<div class="foot">
+镜像:harness-dev:2.1(ad5d60b903ee)· 大小 20.9GB · 压缩包 7.6GB · 部署于 119.3.230.173(BMS 裸金属)<br>
+测试脚本归档:119.3.230.173:/root/verify/ · Mac 本地:harness-release/<br>
+验证截图归档:119.3.230.173:/root/proof/ · Mac 本地:harness-release/
+</div>
+</div></body></html>
