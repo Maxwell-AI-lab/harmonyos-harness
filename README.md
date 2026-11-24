@@ -73,11 +73,12 @@ deveco run --agent build --auto "构建这个工程并安装到模拟器上启�
 - 用法、模型配置、重建步骤、自检方法:[deveco-code/README.md](deveco-code/README.md)
 - 完整测试结论与 40 个集成问题的清单:[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md)([HTML 版](docs/DEVECO-CODE-LINUX-TEST-REPORT.html))
 
-批量跑之前最容易踩的三个坑:
+批量跑之前最容易踩的四个坑:
 
 1. **脚本直接新建工程要带 `--api-level 24`**。命令行工具自带的 SDK 是 API 26,模拟器系统是 API 24;不指定时工程能构建成功,但装不上模拟器。
-2. **宿主机的 inotify 监听限额要放宽**。所有容器共用 root 的额度,几个构建并发就会报 `System limit for number of file watchers reached`。
-3. **用 `--auto` 无人值守时,容器是唯一的安全边界**。DevEco Code 的命令沙箱在 Linux 上不生效,agent 执行的命令不受“只读 / 仅工作区可写”约束。
+2. **不要用 API 26 才有的接口**。同样是这个版本差:代码里用了 API 26 才有的接口,构建和各项检查都不会提示,运行时才崩。目前的迁移结果里没有发现,详见测试报告第四节。
+3. **宿主机的 inotify 监听限额要放宽**。所有容器共用 root 的额度,几个构建并发就会报 `System limit for number of file watchers reached`。
+4. **用 `--auto` 无人值守时,容器是唯一的安全边界**。DevEco Code 的命令沙箱在 Linux 上不生效,agent 执行的命令不受“只读 / 仅工作区可写”约束。
 
 另外,2.2 设置了 `ENTRYPOINT`(先起虚拟显示器再执行命令):`docker run -it 镜像` 直接进 bash;`docker run 镜像 <命令>` 照常执行;想绕过入口用 `docker run --entrypoint bash ...`。
 

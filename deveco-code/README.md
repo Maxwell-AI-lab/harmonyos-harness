@@ -143,6 +143,8 @@ docker exec -d mydev x11vnc -display :0 -rfbport 5900 -passwd <密码> -forever 
 
 **1. 用脚本直接调 CLI 新建工程时要指定 `--api-level 24`。** 命令行工具自带的 SDK 是 API 26，模拟器系统是 API 24（官方远端镜像目录里最新的就是 API 24，没有 26 的）。不指定时工程默认 API 26，能构建成功，但装到模拟器上会失败：`code:9568297 install failed due to older sdk version in the device`。已有工程则把 `build-profile.json5` 里的 `targetSdkVersion` / `compatibleSdkVersion` 设为 `"6.1.1(24)"`。
 
+反过来的情况也要知道：代码里如果用了 API 26 才有的接口，构建、ArkTS 检查、Lint 都不会提示，装到模拟器上一运行就崩（`xxx is not callable`）。这一点实测过；目前同事流水线的 87 个迁移工程里没有发现这种调用。想加一道保险，可以在流水线里加一步扫描，或者给 agent 写一条“只用 API 24 及以前的接口”的规则。
+
 让 DevEco Code 的 agent 自己建工程则不需要操心：实测不给提示，它会自己发现并改成 `6.1.1(24)`，只是多花一点时间。想让它第一次就做对，可以写一条全局指令（`/root/.config/deveco/AGENTS.md`），镜像里目前没有加。
 
 **2. 宿主机的 inotify 监听限额要放宽。** 所有容器都以 root 运行，共用同一份 inotify 额度；老内核默认只有 8192 个 watch，几个 hvigor 构建并发就会报 `ENOSPC: System limit for number of file watchers reached`。bms173 已设为 1048576 并写入 `/etc/sysctl.d/90-inotify-limits.conf`，换到别的机器要同样设置。
@@ -184,7 +186,7 @@ agent 部分每次的完整输出保存在容器的 `/tmp/selfcheck-agent-1.log`
 - 1.17.9 已移除 `build_project` / `start_app` 这类内建工具，构建和运行由 agent 通过 bash 调 `devecocli`。现存的内建鸿蒙工具是 `verify_ui` / `get_ui_verification_log` / `save_ui_screenshot`。
 - 只允许中国大陆 IP 使用（DevEco Code 的地区限制）。
 - 不需要登录华为账号：构建、运行、模拟器、界面检查、配合自有模型对话都不需要。只有用华为提供的模型时才需要登录（且要求实名认证）。
-- 语言服务（LSP）不可用：agent 拿不到即时代码诊断和格式化，只能靠构建发现编译错误。
+- 语言服务（LSP）是 DevEco Code 自带的功能，不是要对接的外部服务，但默认关闭（各个平台默认都一样）。在 `deveco.json` 里写 `"lsp": true` 可以打开，打开后 `.ts`、`.js` 文件有即时的代码诊断。内置的语言服务器里没有 ArkTS（那部分随 DevEco Studio 提供，没有 Linux 版），所以 `.ets` 文件仍然只能靠 `devecocli check arkts` 和构建发现编译错误。打开后第一次用会联网下载语言服务器；工程里的 `typescript` 包需要是 5.x。
 - 命令沙箱不生效：agent 执行的命令不受“只读 / 仅工作区可写”约束，全部直接执行。用 `--auto` 无人值守时，容器就是唯一的安全边界。
 - `check compat` 不可用：要求命令行工具 ≥ 26.0.1。
 - **Lint 在这个镜像里默认生效，但要知道上游原版的行为。** 上游新建工程自带的 `code-linter.json5` 与检查器内置的默认配置完全相同，命令行模式下检查器遇到默认配置会跳过 ESLint 引擎，结果是“检查了 0 个文件、无问题”，是一个假的“全部通过”。镜像里用 `enable-lint.py` 给工程模板加了一条规则（`@typescript-eslint/no-unused-vars`，不检查未使用的函数参数，因为模板自己的 `EntryAbility.ets` 就有两个未使用的回调参数），之后新建工程的 Lint 默认就会执行推荐规则集和安全规则。只对镜像里新建的工程生效；已有的工程如果配置还是上游默认内容，需要自己改动一条规则或用 `--config-path`。汇总里的 `Files checked` 是有问题的文件数，引擎被跳过和检查过没问题时都显示 0，不能用它判断 Lint 是否真的跑了。
