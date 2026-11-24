@@ -22,6 +22,7 @@ emulator-state/
 selfcheck.sh             镜像自检脚本（47 项，在全新容器里跑，有失败时退出码为 1）
 enable-lint.py            让新建工程的 Lint 默认生效（改 devecocli 的工程模板，可重复执行）
 tools/ctx.py             只读分析工具：在压缩后的 JS 里按关键词取上下文
+tools/html2md.py         HTML 报告 → Markdown 的转换脚本（仓库 docs/ 下的 .md 报告由它生成；改了 HTML 版后在本目录重新跑一遍）
 build/                   构建溯源：BUILD-INFO、linux-build.patch、sha256、依赖清单
 e2e/                     上游官方实机用例（cli 类）两轮运行日志与汇总
 evidence/                测试截图与自检日志
