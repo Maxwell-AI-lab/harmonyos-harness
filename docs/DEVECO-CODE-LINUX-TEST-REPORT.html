@@ -281,7 +281,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 
 <h2>十二、集成问题汇总</h2>
 
-<p>把 DevEco Code（Linux 版）装进镜像并用起来的全过程中，一共遇到 <b>44 个问题</b>：<span class="tag tok">30 个已解决</span> <span class="tag twarn">6 个属于已知约束</span>（已写进文档） <span class="tag terr">8 个仍未解决</span>。</p>
+<p>把 DevEco Code（Linux 版）装进镜像并用起来的全过程中，一共遇到 <b>44 个问题</b>：<span class="tag tok">31 个已解决</span> <span class="tag twarn">5 个属于已知约束</span>（已写进文档） <span class="tag terr">8 个仍未解决</span>。</p>
 
 <h3>构建与安装</h3>
 <table>
@@ -322,7 +322,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <tr><td>对话报“模型响应意外结束”</td><td>我配的网关地址少了 <code>/v1</code>，请求打到了网页路由 → 地址必须以 <code>/v1</code> 结尾</td><td><span class="tag tok">已解决</span></td></tr>
 <tr><td>界面验证工具提示未配置多模态模型</td><td>默认指向华为内置的看图模型（需登录）→ 给 <code>ui_verification</code> 指定自有模型</td><td><span class="tag tok">已解决</span></td></tr>
 <tr><td>界面验证报模型不存在</td><td>这个工具固定走 OpenAI 兼容接口，而网关的模型名映射只在 Anthropic 协议那条路由上生效 → 用网关认识的真实模型名</td><td><span class="tag tok">已解决</span></td></tr>
-<tr><td>自定义供应商不生效</td><td><code>@ai-sdk/openai-compatible</code> 不在二进制里，用它定义的供应商会静默不加载 → 用内置的 <code>@ai-sdk/anthropic</code></td><td><span class="tag twarn">已知约束</span></td></tr>
+<tr><td>自定义供应商不生效（当时的原因归错了）</td><td>当时写的是“<code>@ai-sdk/openai-compatible</code> 不在二进制里，用它定义的供应商会静默不加载”，这是错的。2026-11-24 复测：这个包是内置的（二进制里有 20 处引用，是引用最多的供应商包），按 <code>npm</code> + <code>options.baseURL</code>（以 /v1 结尾）+ <code>models</code> 的写法配置后，请求能正常到达 OpenAI 兼容接口的 <code>/v1/chat/completions</code>，模型正常回复。当时“不生效”的真正原因没有查清，配置写法以仓库的使用指南为准</td><td><span class="tag tok">已解决</span>（更正）</td></tr>
 <tr><td>对话偶发报数据库锁</td><td>同事的 new-api 网关在并发流式请求结算时 <code>SQLITE_BUSY</code>，会影响所有客户端 → 需要在网关侧处理</td><td><span class="tag terr">未解决</span></td></tr>
 </table>
 
