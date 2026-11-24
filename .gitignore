@@ -11,3 +11,7 @@ deveco-code/emulator-state/Huawei/
 # 作为验证证据保留的运行日志(上面的 *.log 不适用于这几个)
 !deveco-code/evidence/*.log
 !deveco-code/e2e/*.log
+!emulator-api26/evidence/*.log
+
+# emulator-api26 的构建输入(prepare.sh 的产物,约 6.3GB)
+emulator-api26/build-inputs/

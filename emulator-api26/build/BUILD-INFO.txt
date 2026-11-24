@@ -1,0 +1,60 @@
+# harness-dev:2.3 构建记录(2026-11-24,服务器 bms173)
+# 本文件记录最终镜像用了哪些东西、它们的校验和,以及导出包的信息。重新构建或重新下载之后请同步更新。
+
+base_image=harness-dev:2.2
+base_image_id=01ef464eb69f
+image=harness-dev:2.3
+image_id=6d2657372fb001f37f606bb95ae5ec8cddd4c92e0532ee9297e2d3176da04ac2
+image_created=2026-11-24T14:54:46+08:00
+image_size=29.9GB (32 层;2.2 是 22.3GB、25 层)
+image_platform=linux/amd64
+build_inputs=/root/harness-2.3-build/final-inputs (由 prepare.sh 生成)
+prepare_time=6 分 09 秒 (下载系统镜像 3 分 10 秒,首次启动 2 分 41 秒)
+build_time=48 秒 (只含 COPY 和一个拷贝实例的 RUN)
+
+# 模拟器程序没有换,和 2.2 是同一个
+emulator_program=HarmonyOS Emulator 26.0.0.400 (命令行工具 26.0.0.821 自带)
+
+# 新加的系统镜像
+system_image=HarmonyOS 7.0.0(26.0.0)
+system_image_package_version=7.0.0.107
+system_image_api=26
+system_image_device=phone_all_x86
+system_image_source=devecocli emulator image download --device-type phone --os-version "HarmonyOS 7.0.0(26.0.0)"
+system_image_release=Release (HarmonyOS 7.0.0 / API 26.0.0 于 2026-08-29 正式发布;包 7.0.0.107 的上线日期官方清单里没有)
+# sha256  大小(字节)  文件
+system_image_file=ebd9fa36365c45b71e32dc7c13d3b47ef1dd163267a28cdcaa09dd653d179753  10244576  bzImage
+system_image_file=73bbee2b96789de76750890873af981d8db2cf9ac864bfcefccee69b68285275  2752705  ramdisk.img
+system_image_file=67f603b3a05080c15a6bf3df843061efd2c3908d1f339b8ec1f3806368295cb5  3670016000  system.img
+system_image_file=48fadf358d46300f3633370dc9655218bfa7f58c1589097ca4eb5508e15fda3e  838860800  sys_prod.img
+system_image_file=7412e6bbd130c0b8fc5174212c9353eec719f18ae3615446b591350534344934  209715200  vendor.img
+system_image_file=76bea2d7fdbec4904e8401d244e9cb4aa2f548bf94af2b4edd584ceed3aaf372  104857600  userdata.img
+system_image_file=436c0eb98710ab305e9a9127d31e0160f18aba854414979861f78f3f4b84f644  82  info.json
+system_image_file=d1a1c6abed3ae8f4ca0a395ee775577d604c57723d00db4de6896ba5e550f82d  363  sdk-pkg.json
+
+# 保留的系统镜像(在 2.2 的层里)
+system_image_kept=HarmonyOS 6.1.1(24) phone_all_x86,包版本 6.1.0.126
+
+# 预置实例状态:都是“只启动过一次”的干净实例,isHotBoot=false,没有内存快照(ram.bin)
+instance_default=deveco_phone,系统 HarmonyOS 7.0.0(26.0.0),文件合计 953879214 字节(约 0.91GB)
+instance_switchable=/opt/emulator-state/api24/deveco_phone,系统 HarmonyOS 6.1.1(24),约 0.76GB(取自 harness-dev:2.2,原样)
+instance_switch_script=/opt/scripts/switch-emulator.sh 24|26|reset|show
+
+# 构建用的定义文件和脚本的 sha256(与仓库 emulator-api26/ 下的文件相同)
+file_sha256=603d4b023f101d3043c532c654b6cb45aa5c040cbcc9b1a3ca6e829910e9d01d  Dockerfile
+file_sha256=32a11f0926e503b7c98a94fb348aeb92770b18a23e281d75d15cc22c64b8a269  prepare.sh
+file_sha256=f54bc6ca17501ac1054e6e0aee0c962396ef02c9bf73354176c681fa9397e503  switch-emulator.sh
+file_sha256=6044a49d8ebee2061485d24f4299078ad30d560b273d4e7325c1e463702de052  selfcheck.sh
+
+# 验证(都在最终镜像新起的容器里做的)
+selfcheck=72 通过 / 0 失败 / 0 跳过(带模型;服务器负载 45~60)
+selfcheck_log=evidence/selfcheck-2.3-20261124.log
+real_apps=同事流水线的 4 个迁移工程(按 API 24 做)在 API 26 模拟器上全部构建、安装启动成功,界面正常
+real_apps_log=evidence/real-migrated-apps-20261124.log
+
+# 导出包
+tarball=/root/harness-release/harness-dev-2.3.tar.gz
+tarball_size=12087764757 (11.26G)
+tarball_sha256=a545bd119fe7c91e20a14e2d06220388972be6891c6604c874a1c34f3f72c641
+tarball_export_time=475 秒 (docker save | pigz -p 6 -6)
+tarball_verified=pigz -t 通过;包内 manifest 的 Config 为 6d2657372fb0….json、RepoTags 为 harness-dev:2.3;docker load 导入成功(169 秒,在 bms173 上做的,那里本来就有各层,只验证了包的结构,不等于在全新机器上导入过);校验和复算一致

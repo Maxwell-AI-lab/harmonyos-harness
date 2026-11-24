@@ -1,5 +1,7 @@
 # DevEco Code（Linux 版）装进 harness-dev 镜像
 
+> 本目录是 `harness-dev:2.2` 的材料。更新的 `harness-dev:2.3` 在它的基础上把鸿蒙模拟器升级到了 API 26，见 [emulator-api26/README.md](../emulator-api26/README.md)。下文关于“新建工程要指定 `--api-level 24`”“模拟器是 API 24”的内容只适用于 2.1 / 2.2。
+
 DevEco Code 官方只发布 Windows / macOS 包。本目录是从上游源码构建 Linux 版、装进 `harness-dev:2.1` 并做功能验证的全部材料。
 
 | 项 | 值 |
@@ -32,8 +34,10 @@ evidence/                测试截图与自检日志
 
 前提：x86_64 机器、Docker、`/dev/kvm`，本机已有 `harness-dev:2.1`（构建方法见仓库根目录的 README），能访问 gitcode 和华为云镜像站。全程不需要登录华为账号。
 
+这个目录合并到 main 之前只在分支 `feat/deveco-code-linux` 上，克隆时要带上分支名；合并之后可以去掉 `-b` 那一段。
+
 ```bash
-git clone https://github.com/Maxwell-AI-lab/harmonyos-harness.git && cd harmonyos-harness/deveco-code
+git clone -b feat/deveco-code-linux https://github.com/Maxwell-AI-lab/harmonyos-harness.git && cd harmonyos-harness/deveco-code
 B=/root/deveco-build
 mkdir -p $B/{src,scripts,out,image/emulator-state/Huawei}
 cp build-in-container.sh apply_linux_patch.py $B/scripts/

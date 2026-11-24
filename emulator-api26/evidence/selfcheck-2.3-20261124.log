@@ -1,0 +1,124 @@
+harness-dev 自检  2026-11-24 14:54:50
+
+===== 1. 静态配置 =====
+  [通过] deveco 二进制存在且可执行
+  [通过] deveco --version
+         1.17.9
+  [通过] 二进制 sha256 与构建记录一致
+         8e60219c09f7e9b992707743a1e46d4063179e0f0f1e1c0d80739a7c033fac85
+  [通过] 运行时依赖 deveco-harness 在位
+  [通过] 技能数 = 6(内建插件已加载)
+  [通过] 适配目录链接有效: sdk
+  [通过] 适配目录链接有效: tools/node
+  [通过] 适配目录链接有效: tools/ohpm
+  [通过] 适配目录链接有效: tools/hvigor
+  [通过] 适配目录链接有效: tools/emulator
+  [通过] hdc 可经 DEVECO_HOME 找到
+         Ver: 3.2.0f
+  [通过] 系统镜像默认位置链接有效: HarmonyOS-7.0.0
+  [通过] 系统镜像默认位置链接有效: HarmonyOS-6.1.1
+  [通过] API 26 系统镜像文件在位
+         4.6G
+  [通过] API 26 系统镜像的版本信息
+         apiVersion 26 7.0.0.107 Release(若重新下载过,请同步更新脚本里的 EXPECTED_IMG_VER)
+  [通过] API 24 系统镜像保留(6.1.1)
+  [通过] 默认预置实例是 API 26
+         HarmonyOS 7.0.0(26.0.0)
+  [通过] 默认实例关闭了热启动(没有内存快照)
+  [通过] 预置实例状态在位: api26
+         HarmonyOS 7.0.0(26.0.0)
+  [通过] 预置实例状态在位: api24
+         HarmonyOS 6.1.1(24)
+  [通过] 切换脚本可执行
+         /opt/scripts/switch-emulator.sh 24|26|show
+  [通过] 实例注册项指向默认实例
+  [通过] 构建记录在位,含 --skip-agreement
+  [通过] 产品协议接受记录在位
+  [通过] 模拟器许可已接受(两项)
+  [通过] 隐私设置:数据统计与工具改进计划已关闭
+  [通过] 环境变量 DEVECO_CLI_DISABLE_TELEMETRY=1
+  [通过] 镜像内无遥测文件
+  [通过] 基础镜像的工具全部在位(15 个)
+  [通过] 工作目录 /work 为空(无遗留测试文件)
+
+===== 2. 运行环境 =====
+  [通过] DISPLAY=:0
+  [通过] 虚拟显示器 X0 已就绪(入口脚本)
+  [通过] 窗口管理器 openbox 运行中
+  [通过] /dev/kvm 可用
+  [通过] hdc 可运行
+  [通过] 默认模拟器实例 deveco_phone 可见,且是唯一实例(有多个实例时运行要指定设备)
+  [通过] 实例列表显示系统为 HarmonyOS 7.0.0(26.0.0)
+
+===== 3. 基础功能 =====
+  [通过] deveco serve 无头服务
+         {"healthy":true,"version":"1.17.9"}
+  [通过] devecocli --version 1.3.12
+  [通过] 模拟器启动(窗口模式)并完成开机
+         用时 51 秒;started successfully
+  [通过] 设备上的系统是 API 26
+         emulator 7.0.0.107(SP8DEVC00E999R4P11) 
+  [通过] devecocli device list 识别到模拟器
+  [通过] 模拟器截图可用
+         112795 字节
+  [通过] 界面节点树可读
+  [通过] 新建工程(默认,不指定 API 级别)
+         "targetSdkVersion": "26.0.0"
+  [通过] 工程声明的是 API 26(26.0.0)
+  [通过] devecocli build
+         BUILD SUCCESSFUL in 7 s 204 ms 
+  [通过] 产物 HAP 已生成
+         entry-default-unsigned.hap
+  [通过] ArkTS 静态检查
+         No errors found in 3 file(s).
+  [通过] 直接 hvigorw 构建(HMBot 使用的方式)
+         BUILD SUCCESSFUL in 9 s 667 ms 
+  [通过] 代码 Lint:干净的模板工程无问题
+  [通过] 代码 Lint(工程默认配置)报出埋下的未使用变量
+         Files checked: 1
+  [通过] 安装并启动应用(默认工程,不用指定 API 级别)
+         Smoke: PASS
+  [通过] 新建工程(--api-level 24)
+         "compatibleSdkVersion": "6.1.1(24)"
+  [通过] API 24 工程构建
+         BUILD SUCCESSFUL in 8 s 74 ms 
+  [通过] API 24 的工程能装到 API 26 模拟器上并运行
+         Smoke: PASS
+  [通过] 调用 API 26 接口的探针工程构建
+         BUILD SUCCESSFUL in 7 s 625 ms 
+  [通过] API 26 才有的接口(fs.listFileExtSync)能正常调用
+         APIPROBE26 ok
+  [通过] 安卓模拟器启动(基础镜像原有功能,回归)
+         用时 41 秒
+  [通过] 安卓模拟器截图可用(画面不是纯色)
+         抽样到 1858 种颜色,1371011 字节;就绪后约 17 秒
+  [通过] 鸿蒙与安卓模拟器同时在线
+         hdc 127.0.0.1:5555;adb emulator-5556 
+  [通过] 模拟器停止后能重新启动
+         用时 41 秒;started successfully
+
+===== 4. agent(需要模型) =====
+  [通过] 协议开关生效:删掉接受记录后仍可对话
+  [通过] agent 自主构建并安装启动
+  [通过] agent 调用内建界面验证工具
+         verify_ui 调用成功,保存了 3 张截图
+
+===== 5. 切换系统版本 =====
+  [通过] 切换到 API 24 并启动
+         用时 36 秒;emulator 6.1.0.126(SP1DEVC00E120R4P11) ;已从 HarmonyOS 7.0.0(26.0.0) 切换到 HarmonyOS 6.1.1(24)。执行 devecocli emulator start deveco_phone 启动。
+  [通过] API 24 的系统上安装并启动 API 24 的工程
+         Smoke: PASS
+  [通过] 切换回 API 26 并启动
+         用时 43 秒;已从 HarmonyOS 6.1.1(24) 切换到 HarmonyOS 7.0.0(26.0.0)。执行 devecocli emulator start deveco_phone 启动。
+  [通过] 已是目标版本时不会重复切换
+         当前已经是 HarmonyOS 7.0.0(26.0.0),不用切换
+  [通过] reset 能把当前版本恢复成干净实例
+         已把 HarmonyOS 7.0.0(26.0.0) 的实例恢复成干净状� 文件数与大小和预置状态一致
+  [通过] 恢复后能正常启动
+         用时 43 秒
+
+===== 6. 遥测 =====
+  [通过] 全部命令跑完后仍未产生遥测文件
+
+===== 汇总:通过 72 / 失败 0 / 跳过 0 =====
+EXIT=0

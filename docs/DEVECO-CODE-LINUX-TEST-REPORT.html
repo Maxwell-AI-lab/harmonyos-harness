@@ -41,7 +41,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <h2>一、结论</h2>
 
 <div class="callout ok">
-<b>DevEco Code 的鸿蒙开发能力在 Linux 上可以正常工作，并且适合无人值守批量运行</b>。在全新容器里不做任何手动步骤，agent 自己完成“构建 → 安装 → 启动 → 界面验证 → 截图”全流程；未登录华为账号，模型走自有网关。
+<b>DevEco Code 的鸿蒙开发能力在 Linux 上可以正常工作，并且适合无人值守批量运行</b>。在全新容器里不做任何手动步骤，agent 自己完成“构建 → 安装 → 启动 → 界面验证 → 截图”全流程；未登录华为账号，模型走自有网关。<br>（2026-11-24 更新：在此基础上做了 <code>harness-dev:2.3</code>，把模拟器升级到 API 26，和构建工具版本一致，见第十三节。）
 </div>
 
 <div class="stat-row">
@@ -141,7 +141,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <tr><th style="width:24%">组件</th><th style="width:22%">版本</th><th>说明</th></tr>
 <tr><td>命令行工具（CLT）</td><td>26.0.0.821</td><td>镜像里这套来自社区镜像仓，是该仓的最新版（2026-09-02）。官方下载中心需登录，是否有 26.0.1 的 Linux 包未确认</td></tr>
 <tr><td>CLT 自带的 SDK</td><td>API 26</td><td><code>HarmonyOS SDK: HarmonyOS 26.0.0 Release</code></td></tr>
-<tr><td>模拟器系统镜像</td><td>API 24</td><td>HarmonyOS 6.1.1(24)</td></tr>
+<tr><td>模拟器系统镜像</td><td>API 24</td><td>HarmonyOS 6.1.1(24)。2.3 起默认改为 API 26（HarmonyOS 7.0.0），见第十三节</td></tr>
 </table>
 
 <div class="callout err">
@@ -151,9 +151,13 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 </div>
 
 <div class="callout ok">
-<b>这个不一致没法消除，但 agent 能自己处理</b>。命令行工具默认取 SDK 里的最高 API 级别（<code>detectApiLevel()</code> 直接返回最大值），没有可配置的开关；官方远端镜像目录里最新的模拟器系统就是 HarmonyOS 6.1.1（API 24），没有 API 26 的镜像。<br>
+<b>在 2.2 上这个不一致没法消除，但 agent 能自己处理</b>。（更正：官方目录里其实有 API 26 的系统镜像，当时查漏了；2.3 换上之后这个问题不存在，见第十三节。）命令行工具默认取 SDK 里的最高 API 级别（<code>detectApiLevel()</code> 直接返回最大值），没有可配置的开关；官方镜像目录里其实有 API 26 的系统镜像（HarmonyOS 7.0.0），我当时查漏了，以为最新只到 24——更正见第十三节。<br>
 实测不给任何提示，让 agent 自己新建工程并安装到模拟器（当时模拟器还没启动）：它自己启动了模拟器，发现“模板默认 API 26，而模拟器为 6.1.1(24)”，把 <code>build-profile.json5</code> 改成 <code>6.1.1(24)</code> 后安装运行成功，全程 2 分 13 秒，并如实报告了自己改了什么。<br>
 所以只有<b>不经 agent、直接用脚本调 <code>devecocli create</code> 和 <code>run</code></b> 的流程会真的失败，那种情况必须自己加 <code>--api-level 24</code>。
+</div>
+
+<div class="callout ok">
+<b>下面这两个问题在 harness-dev:2.3 里已经不存在</b>：2.3 把模拟器的系统换成了 API 26，和构建工具版本一致，默认新建的工程能直接装，API 26 才有的接口也能正常调用。以下内容只适用于 2.1 / 2.2。详见第十三节。
 </div>
 
 <div class="callout warn">
@@ -186,8 +190,8 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 
 <table>
 <tr><th style="width:6%">级</th><th style="width:30%">问题</th><th>说明</th></tr>
-<tr><td><span class="tag terr">高</span></td><td>SDK API 26 与模拟器 API 24 不一致</td><td>见第四节。批量建工程必须指定 API 24</td></tr>
-<tr><td><span class="tag twarn">中</span></td><td>调用了 API 26 才有的接口时，构建不报错、运行时才崩</td><td>见第四节。扫描 87 个迁移工程没有发现；目前没有任何防护，可加扫描步骤或给 agent 加规则</td></tr>
+<tr><td><span class="tag tok">已解决</span></td><td>（仅 2.2）SDK API 26 与模拟器 API 24 不一致</td><td>2.3 把模拟器换成 API 26 后不存在这个问题，见第十三节。仍用 2.2 的：批量建工程要指定 API 24，见第四节</td></tr>
+<tr><td><span class="tag tok">已解决</span></td><td>（仅 2.2）调用了 API 26 才有的接口时，构建不报错、运行时才崩</td><td>2.3 的模拟器是 API 26，接口可以正常调用，见第十三节。仍用 2.2 的见第四节（扫描 87 个迁移工程没有发现）</td></tr>
 <tr><td><span class="tag terr">高</span></td><td>宿主机 inotify 监听限额</td><td>所有容器共用 root 的额度，老内核默认 8192 个 watch，并发构建时报 <code>ENOSPC: System limit for number of file watchers reached</code>。bms173 已调到 1048576 并持久化；换机器要重设</td></tr>
 <tr><td><span class="tag twarn">中</span></td><td><code>verify_ui</code> 依赖能看图的模型</td><td>默认指向华为内置的多模态模型（需登录）。用自有网关时要在配置里给 <code>ui_verification</code> 指定，且模型名必须是网关在 OpenAI 兼容路由上认识的</td></tr>
 <tr><td><span class="tag twarn">中</span></td><td>模型网关的两个问题</td><td>并发流式请求结算时 <code>SQLITE_BUSY</code>；模型名映射只在 Anthropic 协议路由上生效。这两点是同事的 new-api 网关的问题，会影响所有客户端</td></tr>
@@ -209,6 +213,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <tr><td>官方下载中心是否有 26.0.1 的 Linux 命令行工具</td><td>需要登录才能看到版本列表</td></tr>
 <tr><td>API 26 新接口扫描的第二次独立复核</td><td>用不依赖 import 的全文检索做交叉验证，结果里全是同名的普通变量（如 width、id、value），逐个判别的那一步没有跑完。“0 处”的结论来自按 import 关系比对的扫描</td></tr>
 <tr><td>官方安装包会不会自带打开语言服务的配置</td><td>没有官方的 Linux 安装包，无法对比。从源码看各平台默认都是关闭</td></tr>
+<tr><td>API 26 系统镜像包（7.0.0.107）的上线日期</td><td>官方清单不带日期。对应的系统版本 HarmonyOS 7.0.0 于 2026-08-29 正式发布；这个包更具体的日期查不到</td></tr>
 </table>
 
 <h2>八、需要如实说明的几件事</h2>
@@ -276,7 +281,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 
 <h2>十二、集成问题汇总</h2>
 
-<p>把 DevEco Code（Linux 版）装进镜像并用起来的全过程中，一共遇到 <b>42 个问题</b>：<span class="tag tok">26 个已解决</span> <span class="tag twarn">8 个属于已知约束</span>（已写进文档） <span class="tag terr">8 个仍未解决</span>。</p>
+<p>把 DevEco Code（Linux 版）装进镜像并用起来的全过程中，一共遇到 <b>44 个问题</b>：<span class="tag tok">30 个已解决</span> <span class="tag twarn">6 个属于已知约束</span>（已写进文档） <span class="tag terr">8 个仍未解决</span>。</p>
 
 <h3>构建与安装</h3>
 <table>
@@ -295,6 +300,8 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <tr><td>CLI 启动模拟器报镜像不存在</td><td>CLI 不带镜像根目录参数，默认到 DevEco Studio 的位置找 → 在默认位置放软链接</td><td><span class="tag tok">已解决</span></td></tr>
 <tr><td>新实例首次启动，CLI 报超时</td><td>首次冷启动约 85 秒，CLI 只等约 60 秒（之后其实会启动完成）→ 镜像预置一个已启动过的实例，首次启动 30 秒</td><td><span class="tag tok">已解决</span></td></tr>
 <tr><td><code>devecocli run</code> 误报应用崩溃</td><td>冒烟检查默认只等 3 秒就查进程，冷启动时应用还没起来 → 等待时间放宽到 10 秒</td><td><span class="tag tok">已解决</span></td></tr>
+<tr><td>新建的实例默认开着热启动，停了再起偶尔连不上调试通道</td><td>从内存快照恢复后，来宾系统里的调试服务偶尔起不来，同一容器里停了再起 5 次里卡住 2 次，快照文件还有 2.5GB → 预置实例关闭热启动（<code>isHotBoot=false</code>），每次正常开机，连续启停都正常，实例约 0.9GB。自己新建的实例要手动关</td><td><span class="tag tok">已解决</span></td></tr>
+<tr><td>预置实例启动比热启动慢</td><td>热启动（从快照恢复）十几秒但不可靠；正常开机要 41～51 秒 → 为了稳定选了正常开机</td><td><span class="tag twarn">已知约束</span></td></tr>
 <tr><td>有多个模拟器实例时运行报错</td><td><code>DEVICE_SELECTION_REQUIRED</code>，连停止的实例也算 → 一个容器只留一个实例，或加 <code>--device</code>。另外用 <code>--path</code> 自定义位置创建的实例，<code>list</code> / <code>start</code> 看不到</td><td><span class="tag twarn">已知约束</span></td></tr>
 </table>
 
@@ -338,8 +345,9 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <h3>SDK 版本</h3>
 <table>
 <tr><th style="width:30%">问题</th><th>原因 → 处理</th><th style="width:10%">状态</th></tr>
-<tr><td>默认建的工程装不上模拟器</td><td>SDK 是 API 26，模拟器是 API 24（官方镜像目录里最新就是 24），不指定时工程默认 26，构建成功但安装失败 <code>9568297</code> → 新建时指定 <code>--api-level 24</code>。agent 不给提示也能自己发现并改对</td><td><span class="tag twarn">已知约束</span></td></tr>
-<tr><td>用了 API 26 才有的接口，构建不报错、运行时才崩</td><td>工具链是 API 26，模拟器是 API 24，构建、ArkTS 检查、Lint 都不比对接口的版本。实测调用 <code>fs.listFileExtSync</code>：构建成功，装到模拟器上一启动就崩（<code>TypeError: listFileExtSync is not callable</code>），用 try/catch 能接住 → 扫描了同事流水线的 87 个迁移工程（6795 个源文件），没有发现这种调用。可加扫描步骤或给 agent 加规则，都还没做</td><td><span class="tag twarn">已知约束</span></td></tr>
+<tr><td>默认建的工程装不上模拟器</td><td>SDK 是 API 26，2.2 的模拟器是 API 24，不指定时工程默认 26，构建成功但安装失败 <code>9568297</code> → 2.2 上新建时指定 <code>--api-level 24</code>（agent 不给提示也能自己发现并改对）；2.3 换成 API 26 的模拟器后不需要</td><td><span class="tag tok">已解决</span>（2.3）</td></tr>
+<tr><td>报告里写“官方镜像目录最新只到 24、没有 API 26 的镜像”</td><td>清单里一直有 HarmonyOS 7.0.0(26.0.0)，排在第一行，是我看漏了 → 读源码确认默认 API 级别取自 SDK 之后，没有再核对一遍清单就下了结论。报告已更正，并据此做了 2.3</td><td><span class="tag tok">已解决</span></td></tr>
+<tr><td>用了 API 26 才有的接口，构建不报错、运行时才崩</td><td>工具链是 API 26，模拟器是 API 24，构建、ArkTS 检查、Lint 都不比对接口的版本。实测调用 <code>fs.listFileExtSync</code>：构建成功，装到模拟器上一启动就崩（<code>TypeError: listFileExtSync is not callable</code>），用 try/catch 能接住 → 扫描了同事流水线的 87 个迁移工程（6795 个源文件），没有发现这种调用。2.2 上可加扫描步骤或给 agent 加规则（都没做）；2.3 的模拟器是 API 26，没有这个问题</td><td><span class="tag tok">已解决</span>（2.3）</td></tr>
 </table>
 
 <h3>宿主机与容器</h3>
@@ -377,11 +385,79 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 <h3>服务器上另一个自己编译的版本（<code>harness-dev:2.1-deveco</code>）</h3>
 <p>那个镜像把压缩包解压后只装了二进制，有三个问题：agent 对话默认被产品协议拦住；内建鸿蒙插件没有加载（技能 2 个，界面验证工具、鸿蒙技能、hdc 守卫都没有）；模拟器相关的配置全部缺失。它能启动，agent 也能靠基础镜像里现成的 <code>hvigorw</code> 完成构建，但用不上 DevEco Code 自己的能力。建议换用 <code>harness-dev:2.2</code>。</p>
 
+<h2>十三、模拟器升级到 API 26（harness-dev:2.3）</h2>
+
+<div class="callout ok">
+<b>官方有 API 26 的模拟器系统镜像，装上之后，第四节和第十二节里“构建工具是 26、模拟器是 24”带来的两个问题都没有了。</b>基于 2.2 做了 <code>harness-dev:2.3</code>：默认模拟器是 HarmonyOS 7.0.0（API 26），和构建工具是同一代；6.1.1（API 24）保留，一条命令可以切换。
+</div>
+
+<p><b>先更正一个错误。</b>第四节和第十二节原先写着“官方镜像目录里最新就是 24，没有 API 26 的镜像”，这是错的。用 <code>devecocli emulator image list --all</code> 查官方目录，里面一直有 <code>HarmonyOS 7.0.0(26.0.0)</code>，而且排在清单的第一行，是我当时看漏了。HarmonyOS 7.0.0（API 26.0.0）于 2026-08-29 正式发布，和 DevEco Studio 26.0.0.821、HarmonyOS SDK 26.0.0.105 同时——正是镜像里这套构建工具的版本。所以“不一致没法消除”这句话也不对：把模拟器换掉就行了。</p>
+
+<h3>实测对比</h3>
+
+<table>
+<tr><th style="width:40%">检查项</th><th style="width:30%">2.2（模拟器 API 24）</th><th>2.3（模拟器 API 26）</th></tr>
+<tr><td>默认新建的工程（API 26）装到模拟器上并启动</td><td>失败，<code>9568297</code></td><td><span class="tag tok">通过</span></td></tr>
+<tr><td>调用 API 26 才有的接口 <code>fs.listFileExtSync</code></td><td>崩溃，<code>TypeError: listFileExtSync is not callable</code></td><td><span class="tag tok">通过</span>，正常返回</td></tr>
+<tr><td>按 API 24 新建的工程装到模拟器上并启动</td><td><span class="tag tok">通过</span></td><td><span class="tag tok">通过</span>（新系统兼容旧工程）</td></tr>
+<tr><td>切到 API 24 的系统后，安装并启动 API 24 的工程</td><td>—</td><td><span class="tag tok">通过</span></td></tr>
+<tr><td>模拟器停掉后，在同一个容器里重新启动</td><td><span class="tag tok">通过</span>（4 次）</td><td><span class="tag tok">通过</span></td></tr>
+<tr><td>新容器里预置实例的启动时间</td><td>30～55 秒（随负载变化）</td><td>41～51 秒（负载 45～60）</td></tr>
+</table>
+
+<h3>镜像里改了什么</h3>
+
+<table>
+<tr><th style="width:22%">项</th><th>内容</th><th style="width:34%">说明</th></tr>
+<tr><td>镜像</td><td><code>harness-dev:2.3</code>（6d2657372fb0，29.9GB）</td><td>= 2.2 + 7.6GB</td></tr>
+<tr><td>系统镜像</td><td><code>HarmonyOS 7.0.0(26.0.0)</code>，包版本 7.0.0.107，4.6GB</td><td>从官方目录下载；6.1.1 的系统镜像保留</td></tr>
+<tr><td>默认实例</td><td><code>deveco_phone</code>（API 26）</td><td>实例名不变，原来的启动命令不用改</td></tr>
+<tr><td>切换</td><td><code>/opt/scripts/switch-emulator.sh 24|26|reset|show</code></td><td>两套“只启动过一次”的实例状态放在 <code>/opt/emulator-state/</code>；只放一个实例，是因为有多个实例时 <code>devecocli run</code> 必须加 <code>--device</code></td></tr>
+<tr><td>自检</td><td><code>/opt/scripts/selfcheck.sh</code>（打进了镜像）</td><td>见下文</td></tr>
+</table>
+
+<h3>预置实例为什么关闭热启动</h3>
+
+<p><code>devecocli emulator create</code> 新建的实例默认 <code>isHotBoot=true</code>：停止时保存内存快照（<code>ram.bin</code>，约 2.5GB），下次启动从快照恢复，只要十几秒。但实测从快照恢复后，来宾系统里的调试服务偶尔起不来：虚拟机在运行、端口在监听，手动连接调试端口返回 <code>[Fail]Connect failed</code>，<code>hdc list targets</code> 里一直是空的，重启 hdc 服务也没用。同一个容器里停了再起，5 次里卡住 2 次。卡住之后把模拟器进程强杀再启动能恢复。</p>
+<p>把实例配置里的 <code>isHotBoot</code> 改成 <code>false</code>，每次都是正常开机：连续启停 4 次都正常，实例状态也从 3.4GB 降到约 0.9GB。代价是启动慢二三十秒。2.2 里 6.1.1 的预置实例本来就是这样配置的，所以它一直很稳。自己用 <code>devecocli emulator create</code> 另建的实例仍然默认开着热启动，需要手动关掉（使用指南第 5.6 节）。</p>
+
+<h3>自检结果</h3>
+
+<p>在用最终镜像新起的容器里运行，带模型，不做任何手动步骤。</p>
+<p>另外拿同事流水线里 4 个真实的迁移工程试了一下：cofi、simple-calendar、omni-notes、mifareclassictool，都是按 API 24（<code>6.1.1(24)</code>）做的。在 API 26 的模拟器上全部构建成功、安装启动成功（冒烟检查 PASS），截图里界面正常显示。日志在 <code>emulator-api26/evidence/</code>；截图是同事流水线的产物，没有放进公开仓库。</p>
+<p>如实说明：自检脚本本身出过两轮错。第一轮是读错了版本信息文件、执行安装时少写了进入工程目录的命令；第二轮是界面验证的判定把 agent 自己试错后被拒绝的那一行算成了失败，恢复实例的检查按磁盘占用比大小、差了 4KB。这些都是自检脚本的问题，不是镜像的，修正之后才得到下面的结果。</p>
+
+<table>
+<tr><th style="width:22%">部分</th><th style="width:8%">项数</th><th>覆盖内容</th></tr>
+<tr><td>1. 静态配置</td><td>30</td><td>2.2 的 20 项，加上：API 26 系统镜像在位且版本正确、API 24 系统镜像保留、默认实例是 API 26 且关闭了热启动、两套预置实例状态在位、切换脚本可执行、实例注册项正确</td></tr>
+<tr><td>2. 运行环境</td><td>7</td><td>2.2 的 6 项，加上：默认实例只有一个，系统显示为 API 26</td></tr>
+<tr><td>3. 基础功能</td><td>25</td><td>2.2 的 17 项（默认工程现在不带 <code>--api-level 24</code>），加上：设备系统是 API 26、工程声明的是 26.0.0、按 API 24 新建的工程能装到 API 26 的模拟器上并运行、调用 API 26 接口 <code>fs.listFileExtSync</code> 的探针工程构建并调用成功、模拟器停止后能在同一个容器里重新启动（41 秒）</td></tr>
+<tr><td>4. agent</td><td>3</td><td>同 2.2：协议开关生效、agent 自主构建并安装启动、agent 调用内建界面验证工具</td></tr>
+<tr><td>5. 切换系统版本</td><td>6</td><td>切到 API 24 并启动（36 秒）、在 API 24 上安装并启动 API 24 的工程、切回 API 26 并启动（43 秒）、已是目标版本时不重复切换、恢复成干净实例、恢复后能正常启动（43 秒）</td></tr>
+<tr><td>6. 遥测</td><td>1</td><td>全部命令跑完后仍未产生遥测文件</td></tr>
+</table>
+
+<p><b>72 项通过，0 失败，0 跳过</b>（含 agent 部分；2026-11-24，最终镜像 <code>6d2657372fb0</code>，服务器负载 45～60）。日志在 <code>emulator-api26/evidence/selfcheck-2.3-20261124.log</code>。</p>
+
+<h3>还没有验证到的</h3>
+
+<ul>
+<li><b>同事的迁移工程，只试了 4 个，而且只确认到“能构建、能装、能启动、首屏正常”。</b>流水线里有十来个应用、每个有多轮结果，没有逐个跑；应用内部各个页面和交互是否正常，没有验证。</li>
+<li><b>手机之外的其他设备类型。</b>官方目录里 API 26 还有平板、折叠屏等镜像，没有下载和测试。</li>
+<li><b>API 24 和 API 26 上界面的差别。</b>同一个应用在两个系统上的显示可能不同。做截图对比之类的评测时，要确认用的是哪一个版本。</li>
+<li><b>长时间运行和多个容器并发。</b>自检是一次性的，没有跑稳定性测试。</li>
+</ul>
+
+<h3>怎么用</h3>
+
+<p>面向使用者的说明在仓库的 <code>docs/USAGE-harness-dev-2.3.md</code>；镜像怎么做、怎么重建、怎么自检在 <code>emulator-api26/README.md</code>。</p>
+
 <div class="foot">
 源码 gitcode.com/openharmony-sig/deveco-code @ b164c1a581de · 补丁 2 文件 / 3 处改动<br>
 构建配方对齐上游 CI（Ubuntu + Node 22 + bun 1.4.2）· 基础镜像 harness-dev:2.1 · 二进制 sha256 8e60219c09f7e9b992707743a1e46d4063179e0f0f1e1c0d80739a7c033fac85（构建参数 <code>--single --skip-agreement</code>）<br>
 HMBot 回归：最终镜像上引擎自检（本地 + 带模型）均通过，与 2.1 结果一致<br>
-2026-11-24 更新：更正第十一节“语言服务”的说明；新增第四节“用了 API 26 才有的接口”的实验与扫描结果
+2026-11-24 更新：更正第十一节“语言服务”的说明；新增第四节“用了 API 26 才有的接口”的实验与扫描结果<br>
+2026-11-24 更新（二）：新增第十三节“模拟器升级到 API 26（harness-dev:2.3）”；更正“官方镜像目录最新只到 24”的错误说法，并据此更新第四节、第六节、第十二节
 </div>
 
 </div></body></html>

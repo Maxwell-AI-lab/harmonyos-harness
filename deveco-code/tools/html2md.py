@@ -81,6 +81,24 @@ def codespan(s, in_table=False):
     return f"{fence}{pad}{s}{pad}{fence}"
 
 
+CJK_OPEN = "（【《“‘"
+CJK_CLOSE = "。，：；、！？）】》”’"
+
+
+def emphasis(inner, mark):
+    """加粗 / 斜体。CommonMark 规定:结束标记前一个字是标点时,后面必须跟空白或标点,否则不算结束标记。
+    所以 **…结论。**后面直接跟正文 会原样露出星号。把贴边的中文标点挪到标记外面(开头的括号、引号同理):
+    写成 **…结论**。后面直接跟正文 就正常了。显示上只有这几个标点不再加粗 / 倾斜。"""
+    lead = tail = ""
+    while inner and inner[0] in CJK_OPEN:
+        lead += inner[0]
+        inner = inner[1:]
+    while inner and inner[-1] in CJK_CLOSE:
+        tail = inner[-1] + tail
+        inner = inner[:-1]
+    return f"{lead}{mark}{inner}{mark}{tail}" if inner else lead + tail
+
+
 def inline(kids, table=False):
     out = []
     for k in kids:
@@ -91,11 +109,11 @@ def inline(kids, table=False):
         elif k.tag in ("b", "strong"):
             inner = inline(k.kids, table).strip()
             if inner:
-                out.append(f"**{inner}**")
+                out.append(emphasis(inner, "**"))
         elif k.tag in ("i", "em"):
             inner = inline(k.kids, table).strip()
             if inner:
-                out.append(f"*{inner}*")
+                out.append(emphasis(inner, "*"))
         elif k.tag == "br":
             out.append("<br>")
         elif k.tag == "span" and "tag" in k.classes:  # 带颜色的状态标签:颜色语义改用符号保留
