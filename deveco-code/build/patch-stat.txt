@@ -1,0 +1,3 @@
+ packages/opencode/script/build.ts       | 15 +++++++++++++++
+ packages/opencode/script/postinstall.ts |  4 +++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)

@@ -4,3 +4,10 @@ node_modules/
 __pycache__/
 *.log
 .DS_Store
+
+# DevEco Code:预置模拟器实例的产物(约 0.76GB,由 deveco-code/emulator-state/prepare.sh 生成,不入库)
+deveco-code/emulator-state/Huawei/
+
+# 作为验证证据保留的运行日志(上面的 *.log 不适用于这几个)
+!deveco-code/evidence/*.log
+!deveco-code/e2e/*.log

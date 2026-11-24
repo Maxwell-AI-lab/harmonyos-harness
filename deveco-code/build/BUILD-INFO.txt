@@ -1,0 +1,10 @@
+repo=https://gitcode.com/openharmony-sig/deveco-code
+base_image=harness-dev:2.1
+built_at=2026-11-23T23:50:22+08:00
+pinned=yes (b164c1a581ded7e596327493c3014ecdf2ee8784)
+deveco_version=1.17.9
+build_flags=--single --skip-agreement
+node=v22.23.5 bun=1.4.2
+commit=b164c1a581ded7e596327493c3014ecdf2ee8784
+date=2026-11-23 16:22:09 +0800
+subject=refactor(session): import conversation domain model

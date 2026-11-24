@@ -1,0 +1,77 @@
+harness-dev 自检  2026-11-24 10:04:46
+
+===== 1. 静态配置 =====
+  [通过] deveco 二进制存在且可执行
+  [通过] deveco --version
+         1.17.9
+  [通过] 二进制 sha256 与构建记录一致
+         8e60219c09f7e9b992707743a1e46d4063179e0f0f1e1c0d80739a7c033fac85
+  [通过] 运行时依赖 deveco-harness 在位
+  [通过] 技能数 = 6(内建插件已加载)
+  [通过] 适配目录链接有效: sdk
+  [通过] 适配目录链接有效: tools/node
+  [通过] 适配目录链接有效: tools/ohpm
+  [通过] 适配目录链接有效: tools/hvigor
+  [通过] 适配目录链接有效: tools/emulator
+  [通过] hdc 可经 DEVECO_HOME 找到
+         Ver: 3.2.0f
+  [通过] 系统镜像默认位置链接有效
+  [通过] 构建记录在位,含 --skip-agreement
+  [通过] 产品协议接受记录在位
+  [通过] 模拟器许可已接受(两项)
+  [通过] 隐私设置:数据统计与工具改进计划已关闭
+  [通过] 环境变量 DEVECO_CLI_DISABLE_TELEMETRY=1
+  [通过] 镜像内无遥测文件
+  [通过] 基础镜像的工具全部在位(15 个)
+  [通过] 工作目录 /work 为空(无遗留测试文件)
+
+===== 2. 运行环境 =====
+  [通过] DISPLAY=:0
+  [通过] 虚拟显示器 X0 已就绪(入口脚本)
+  [通过] 窗口管理器 openbox 运行中
+  [通过] /dev/kvm 可用
+  [通过] hdc 可运行
+  [通过] 预置模拟器实例 deveco_phone 可见
+
+===== 3. 基础功能 =====
+  [通过] deveco serve 无头服务
+         {"healthy":true,"version":"1.17.9"}
+  [通过] devecocli --version 1.3.12
+  [通过] 模拟器启动(窗口模式)并完成开机
+         用时 55 秒;started successfully
+  [通过] devecocli device list 识别到模拟器
+  [通过] 模拟器截图可用
+         111471 字节
+  [通过] 界面节点树可读
+  [通过] 新建工程(--api-level 24)
+         "targetSdkVersion": "6.1.1(24)"
+  [通过] devecocli build
+         BUILD SUCCESSFUL in 12 s 263 ms 
+  [通过] 产物 HAP 已生成
+         entry-default-unsigned.hap
+  [通过] ArkTS 静态检查
+         No errors found in 3 file(s).
+  [通过] 直接 hvigorw 构建(HMBot 使用的方式)
+         BUILD SUCCESSFUL in 14 s 74 ms 
+  [通过] 代码 Lint:干净的模板工程无问题
+  [通过] 代码 Lint(工程默认配置)报出埋下的未使用变量
+         Files checked: 1
+  [通过] 安装并启动应用
+         Smoke: PASS
+  [通过] 安卓模拟器启动(基础镜像原有功能,回归)
+         用时 68 秒
+  [通过] 安卓模拟器截图可用(画面不是纯色)
+         抽样到 1861 种颜色,1367181 字节;就绪后约 27 秒
+  [通过] 鸿蒙与安卓模拟器同时在线
+         hdc 127.0.0.1:5555;adb emulator-5554 emulator-5556 
+
+===== 4. agent(需要模型) =====
+  [通过] 协议开关生效:删掉接受记录后仍可对话
+  [通过] agent 自主构建并安装启动
+  [通过] agent 调用内建界面验证工具
+         工具调用记录在,保存了 2 张截图
+
+===== 5. 遥测 =====
+  [通过] 全部命令跑完后仍未产生遥测文件
+
+===== 汇总:通过 47 / 失败 0 / 跳过 0 =====

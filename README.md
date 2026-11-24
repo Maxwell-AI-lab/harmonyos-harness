@@ -1,9 +1,16 @@
-# Harness 一体化开发镜像(harness-dev:2.1)
+# Harness 一体化开发镜像(harness-dev:2.1 / 2.2)
 
 一个镜像 = 开发构建(安卓+鸿蒙)+ 模拟器运行(安卓+鸿蒙)+ AI 编程工具。
 
+| 版本 | 内容 | 文档 |
+|---|---|---|
+| `harness-dev:2.1` | 基础镜像:双端工具链 + 双端模拟器 + devecocli / Claude Code | 本页 |
+| `harness-dev:2.2` | 2.1 + DevEco Code 1.17.9(Linux 版,从源码构建)+ 预置模拟器实例 + Lint 默认生效 | [deveco-code/README.md](deveco-code/README.md)、[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md) |
+
 **验证服务器**:119.3.230.173(hmbot1119 · 88核 / 376G / KVM)
-**镜像包下载**:`scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .`
+**镜像包下载**:`scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .`(2.2 没有导出包:在服务器上直接用,或在 2.1 之上按 [deveco-code/README.md](deveco-code/README.md) 重建,约 5 分钟)
+
+下文“镜像分层”到“验证状态”两部分对两个版本都适用。
 
 ## 镜像分层
 
@@ -47,8 +54,33 @@ cd /work/你的工程 && hvigorw assembleHap --mode module -p module=entry@defau
 
 ## 验证状态
 
-本镜像 6 项验证全部通过(安卓模拟器/鸿蒙模拟器/鸿蒙构建/安卓构建链/端到端闭环/工具链),详见同目录 VERIFICATION-REPORT.md。
+2.1 的 6 项验证全部通过(安卓模拟器/鸿蒙模拟器/鸿蒙构建/安卓构建链/端到端闭环/工具链),详见 [docs/VERIFICATION-REPORT.md](docs/VERIFICATION-REPORT.md)。2.2 的验证见下方的测试报告。
+
+## harness-dev:2.2 — 集成 DevEco Code(Linux 版)
+
+DevEco Code 官方只发布 Windows / macOS 包。2.2 在 2.1 之上加入了从上游源码构建的 Linux 版 1.17.9,可以用自然语言驱动 agent 完成“建工程 → 构建 → 装到模拟器 → 看界面 → 截图”的闭环,全程不需要人工确认,也不需要登录华为账号(模型用自己配置的)。
+
+```bash
+# 起容器(要 KVM;入口脚本自动拉起虚拟显示器,模拟器以窗口模式运行,可接 VNC 看画面)
+docker run -d --name mydev --device /dev/kvm --shm-size=4g harness-dev:2.2 sleep infinity
+docker exec -it mydev bash
+
+deveco                                        # 交互界面(TUI)
+devecocli emulator start deveco_phone         # 启动预置的模拟器,约 30 秒
+deveco run --agent build --auto "构建这个工程并安装到模拟器上启动"   # 无人值守
+```
+
+- 用法、模型配置、重建步骤、自检方法:[deveco-code/README.md](deveco-code/README.md)
+- 完整测试结论与 40 个集成问题的清单:[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md)([HTML 版](docs/DEVECO-CODE-LINUX-TEST-REPORT.html))
+
+批量跑之前最容易踩的三个坑:
+
+1. **脚本直接新建工程要带 `--api-level 24`**。命令行工具自带的 SDK 是 API 26,模拟器系统是 API 24;不指定时工程能构建成功,但装不上模拟器。
+2. **宿主机的 inotify 监听限额要放宽**。所有容器共用 root 的额度,几个构建并发就会报 `System limit for number of file watchers reached`。
+3. **用 `--auto` 无人值守时,容器是唯一的安全边界**。DevEco Code 的命令沙箱在 Linux 上不生效,agent 执行的命令不受“只读 / 仅工作区可写”约束。
+
+另外,2.2 设置了 `ENTRYPOINT`(先起虚拟显示器再执行命令):`docker run -it 镜像` 直接进 bash;`docker run 镜像 <命令>` 照常执行;想绕过入口用 `docker run --entrypoint bash ...`。
 
 ## 重建镜像(如需)
 
-构建上下文需要:cmdtools.zip(安卓命令行工具)、clt/(鸿蒙 CLT 26.0.0.821,去 emulator)、clt-emu/(鸿蒙 Emulator 二进制)、emu-images/(鸿蒙系统镜像 6.1.1)、start-*.sh。执行 `docker build -t harness-dev:2.1 .`
+构建上下文需要:cmdtools.zip(安卓命令行工具)、clt/(鸿蒙 CLT 26.0.0.821,去 emulator)、clt-emu/(鸿蒙 Emulator 二进制)、emu-images/(鸿蒙系统镜像 6.1.1)、start-*.sh。执行 `docker build -t harness-dev:2.1 .`。2.2 在 2.1 之上重建,步骤见 [deveco-code/README.md](deveco-code/README.md)。
