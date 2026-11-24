@@ -5,10 +5,17 @@
 | 版本 | 内容 | 文档 |
 |---|---|---|
 | `harness-dev:2.1` | 基础镜像:双端工具链 + 双端模拟器 + devecocli / Claude Code | 本页 |
-| `harness-dev:2.2` | 2.1 + DevEco Code 1.17.9(Linux 版,从源码构建)+ 预置模拟器实例 + Lint 默认生效 | [deveco-code/README.md](deveco-code/README.md)、[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md) |
+| `harness-dev:2.2` | 2.1 + DevEco Code 1.17.9(Linux 版,从源码构建)+ 预置模拟器实例 + Lint 默认生效 | **[使用指南](docs/USAGE-harness-dev-2.2.md)**、[deveco-code/README.md](deveco-code/README.md)、[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md) |
 
 **验证服务器**:119.3.230.173(hmbot1119 · 88核 / 376G / KVM)
-**镜像包下载**:`scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .`(2.2 没有导出包:在服务器上直接用,或在 2.1 之上按 [deveco-code/README.md](deveco-code/README.md) 重建,约 5 分钟)
+
+**镜像在哪、怎么拿**:
+
+- 两个版本的镜像都在 173 的 Docker 里。能登录这台机器的人不用传任何东西,直接 `docker run`。
+- 别的机器要用,从 173 拷导出包,再 `docker load -i` 导入:
+  - `scp root@119.3.230.173:/root/harness-release/harness-dev-2.2.tar.gz .`(8.1G)
+  - `scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .`(7.5G)
+- **第一次用 2.2,请看[使用指南](docs/USAGE-harness-dev-2.2.md)**:机器要求、拿到镜像、起容器、配模型、开始干活、常见问题,一步一步都写了。
 
 下文“镜像分层”到“验证状态”两部分对两个版本都适用。
 
@@ -60,6 +67,8 @@ cd /work/你的工程 && hvigorw assembleHap --mode module -p module=entry@defau
 
 DevEco Code 官方只发布 Windows / macOS 包。2.2 在 2.1 之上加入了从上游源码构建的 Linux 版 1.17.9,可以用自然语言驱动 agent 完成“建工程 → 构建 → 装到模拟器 → 看界面 → 截图”的闭环,全程不需要人工确认,也不需要登录华为账号(模型用自己配置的)。
 
+**想用这个镜像:看[使用指南](docs/USAGE-harness-dev-2.2.md)。** 下面是最短的用法(在 173 上):
+
 ```bash
 # 起容器(要 KVM;入口脚本自动拉起虚拟显示器,模拟器以窗口模式运行,可接 VNC 看画面)
 docker run -d --name mydev --device /dev/kvm --shm-size=4g harness-dev:2.2 sleep infinity
@@ -67,11 +76,12 @@ docker exec -it mydev bash
 
 deveco                                        # 交互界面(TUI)
 devecocli emulator start deveco_phone         # 启动预置的模拟器,约 30 秒
-deveco run --agent build --auto "构建这个工程并安装到模拟器上启动"   # 无人值守
+deveco run --agent build --auto "构建这个工程并安装到模拟器上启动"   # 无人值守(需要先配模型)
 ```
 
-- 用法、模型配置、重建步骤、自检方法:[deveco-code/README.md](deveco-code/README.md)
-- 完整测试结论与 40 个集成问题的清单:[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md)([HTML 版](docs/DEVECO-CODE-LINUX-TEST-REPORT.html))
+- 使用指南(机器要求、拿到镜像、配模型、常见问题):[docs/USAGE-harness-dev-2.2.md](docs/USAGE-harness-dev-2.2.md)
+- 镜像怎么做的、重建步骤、自检方法:[deveco-code/README.md](deveco-code/README.md)
+- 完整测试结论与 42 个集成问题的清单:[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md)([HTML 版](docs/DEVECO-CODE-LINUX-TEST-REPORT.html))
 
 批量跑之前最容易踩的四个坑:
 
@@ -80,7 +90,7 @@ deveco run --agent build --auto "构建这个工程并安装到模拟器上启�
 3. **宿主机的 inotify 监听限额要放宽**。所有容器共用 root 的额度,几个构建并发就会报 `System limit for number of file watchers reached`。
 4. **用 `--auto` 无人值守时,容器是唯一的安全边界**。DevEco Code 的命令沙箱在 Linux 上不生效,agent 执行的命令不受“只读 / 仅工作区可写”约束。
 
-另外,2.2 设置了 `ENTRYPOINT`(先起虚拟显示器再执行命令):`docker run -it 镜像` 直接进 bash;`docker run 镜像 <命令>` 照常执行;想绕过入口用 `docker run --entrypoint bash ...`。
+另外,2.2 设置了 `ENTRYPOINT`(先起虚拟显示器再执行命令):`docker run -it 镜像` 直接进 bash;`docker run 镜像 <命令>` 照常执行;想执行一串命令要写成 `docker run 镜像 bash -c "…"`。可以用 `docker run --entrypoint bash ...` 绕过入口,但那样不会自动起虚拟显示器,模拟器就启动不了。
 
 ## 重建镜像(如需)
 

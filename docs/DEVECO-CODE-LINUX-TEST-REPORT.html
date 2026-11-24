@@ -255,7 +255,7 @@ code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);
 
 <table>
 <tr><th style="width:34%">内容</th><th>位置</th></tr>
-<tr><td>镜像</td><td>bms173：<code>harness-dev:2.2</code>（另有空闲容器 <code>deveco-test</code>，<code>docker exec -it deveco-test bash</code> 可直接进去试）</td></tr>
+<tr><td>镜像</td><td>bms173：<code>harness-dev:2.2</code>（另有空闲容器 <code>deveco-test</code>，<code>docker exec -it deveco-test bash</code> 可直接进去试）；导出包 <code>/root/harness-release/harness-dev-2.2.tar.gz</code>（8.11GB，已实际导入验证）；怎么用见 <a href="USAGE-harness-dev-2.2.md">使用指南</a></td></tr>
 <tr><td>构建目录（服务器）</td><td><code>/root/deveco-build/</code>：image/、scripts/、out/（二进制 + 溯源）</td></tr>
 <tr><td>Dockerfile、入口脚本、构建脚本、补丁、自检脚本、Lint 启用脚本</td><td>代码仓库 <code>github.com/Maxwell-AI-lab/harmonyos-harness</code> 的 <code>deveco-code/</code> 目录（README 有重建步骤、用法、模型配置、批量注意事项、自检方法）</td></tr>
 <tr><td>测试报告</td><td><code>docs/DEVECO-CODE-LINUX-TEST-REPORT.html</code>（本文件，另有同内容的 Markdown 版）</td></tr><tr><td>构建溯源</td><td><code>deveco-code/build/</code></td></tr>

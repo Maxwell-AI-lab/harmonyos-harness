@@ -191,7 +191,7 @@
 
 | 内容 | 位置 |
 | --- | --- |
-| 镜像 | bms173：`harness-dev:2.2`（另有空闲容器 `deveco-test`，`docker exec -it deveco-test bash` 可直接进去试） |
+| 镜像 | bms173：`harness-dev:2.2`（另有空闲容器 `deveco-test`，`docker exec -it deveco-test bash` 可直接进去试）；导出包 `/root/harness-release/harness-dev-2.2.tar.gz`（8.11GB，已实际导入验证）；怎么用见 [使用指南](USAGE-harness-dev-2.2.md) |
 | 构建目录（服务器） | `/root/deveco-build/`：image/、scripts/、out/（二进制 + 溯源） |
 | Dockerfile、入口脚本、构建脚本、补丁、自检脚本、Lint 启用脚本 | 代码仓库 `github.com/Maxwell-AI-lab/harmonyos-harness` 的 `deveco-code/` 目录（README 有重建步骤、用法、模型配置、批量注意事项、自检方法） |
 | 测试报告 | `docs/DEVECO-CODE-LINUX-TEST-REPORT.html`（本文件，另有同内容的 Markdown 版） |

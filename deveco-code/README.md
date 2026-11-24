@@ -4,7 +4,7 @@ DevEco Code 官方只发布 Windows / macOS 包。本目录是从上游源码构
 
 | 项 | 值 |
 |---|---|
-| 产物镜像 | `harness-dev:2.2`（bms173 上，22.3GB；= 2.1 + 约 1.4GB）。其他机器按下文“怎么重建”生成，约 6 分钟 |
+| 产物镜像 | `harness-dev:2.2`（bms173 上，22.3GB；= 2.1 + 约 1.4GB）。别的机器用导出包导入，或按下文“怎么重建”生成（约 6 分钟）。怎么用见 [使用指南](../docs/USAGE-harness-dev-2.2.md) |
 | 源码 | `gitcode.com/openharmony-sig/deveco-code` @ `b164c1a`（2026-11-23 16:22） |
 | DevEco Code 版本 | 1.17.9（内含 deveco-cli 1.3.12-Test.2、插件 deveco-harness 0.2.0-test.13） |
 | 二进制 | `/opt/deveco/bin/deveco`，178MB，sha256 `8e60219c…33fac85`（同参数构建可复现） |
@@ -76,6 +76,8 @@ docker build -t harness-dev:2.2 $B/image
 构建脚本默认带 **`--skip-agreement`**（上游构建脚本自带的开关）。需要与官方发布版行为一致的二进制时，用环境变量关掉：`docker exec -e SKIP_AGREEMENT=0 deveco-build bash /work/scripts/build-in-container.sh`。
 
 ## 用法
+
+第一次用这个镜像，看 [使用指南](../docs/USAGE-harness-dev-2.2.md)：怎么拿到镜像、机器要求、常见问题都写在里面。下面是速查。
 
 ```bash
 # 起容器（要 KVM；入口脚本会自动备好虚拟显示器）
