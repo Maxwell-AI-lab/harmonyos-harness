@@ -1,0 +1,6 @@
+#!/bin/bash
+# SkillsRSI 命令行入口。用 DevEco 自带的新版 Node:镜像自带的系统 Node 是 24.0.0,SkillsRSI 要求 24.9 以上。
+export PATH=/opt/deveco-home/tools/node/bin:$PATH
+export SKILLS_RSI_HOME=${SKILLS_RSI_HOME:-/opt/skills-rsi-home}
+export SKILLS_RSI_PYTHON=${SKILLS_RSI_PYTHON:-/usr/bin/python3}
+exec node /opt/skills-rsi/bin/cli.mjs "$@"

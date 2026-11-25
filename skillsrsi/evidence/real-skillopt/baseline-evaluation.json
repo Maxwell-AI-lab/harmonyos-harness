@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "skills-rsi.checks/1",
+  "checks": [
+    {
+      "id": "logic-load",
+      "pass": true,
+      "evidence": "Loaded the generated ArkTS formatter without host APIs"
+    },
+    {
+      "id": "integer",
+      "pass": true,
+      "evidence": "{\"input\":[\"12345\",\".\",\",\",false],\"actual\":\"12,345\",\"expected\":\"12,345\"}"
+    },
+    {
+      "id": "precision",
+      "pass": true,
+      "evidence": "{\"input\":[\"9223372036854775807\",\".\",\",\",false],\"actual\":\"9,223,372,036,854,775,807\",\"expected\":\"9,223,372,036,854,775,807\"}"
+    },
+    {
+      "id": "leading-zeros",
+      "pass": true,
+      "evidence": "{\"input\":[\"00100\",\".\",\",\",false],\"actual\":\"00,100\",\"expected\":\"00,100\"}"
+    },
+    {
+      "id": "fraction-zeros",
+      "pass": true,
+      "evidence": "{\"input\":[\"0000.0100\",\".\",\",\",false],\"actual\":\"0,000.0100\",\"expected\":\"0,000.0100\"}"
+    },
+    {
+      "id": "empty",
+      "pass": true,
+      "evidence": "{\"input\":[\"\",\".\",\",\",false],\"actual\":\"\",\"expected\":\"\"}"
+    },
+    {
+      "id": "expression",
+      "pass": true,
+      "evidence": "{\"input\":[\"5,000 + 5,00000\",\".\",\",\",false],\"actual\":\"5,000 + 500,000\",\"expected\":\"5,000 + 500,000\"}"
+    },
+    {
+      "id": "negative",
+      "pass": true,
+      "evidence": "{\"input\":[\"-1234.567\",\".\",\",\",false],\"actual\":\"-1,234.567\",\"expected\":\"-1,234.567\"}"
+    },
+    {
+      "id": "fraction-without-integer",
+      "pass": true,
+      "evidence": "{\"input\":[\".0500\",\".\",\",\",false],\"actual\":\".0500\",\"expected\":\".0500\"}"
+    },
+    {
+      "id": "already-formatted",
+      "pass": true,
+      "evidence": "{\"input\":[\"123,456\",\".\",\",\",false],\"actual\":\"123,456\",\"expected\":\"123,456\"}"
+    },
+    {
+      "id": "international-localized",
+      "pass": true,
+      "evidence": "{\"input\":[\"12345,67\",\",\",\".\",false],\"actual\":\"12.345,67\",\"expected\":\"12.345,67\"}"
+    },
+    {
+      "id": "indian",
+      "pass": true,
+      "evidence": "{\"input\":[\"1234567.890\",\".\",\",\",true],\"actual\":\"12,34,567.890\",\"expected\":\"12,34,567.890\"}"
+    },
+    {
+      "id": "indian-negative",
+      "pass": true,
+      "evidence": "{\"input\":[\"-987654321\",\".\",\",\",true],\"actual\":\"-98,76,54,321\",\"expected\":\"-98,76,54,321\"}"
+    },
+    {
+      "id": "indian-grouping-quirk",
+      "pass": true,
+      "evidence": "{\"input\":[\"1234567,890\",\",\",\".\",true],\"actual\":\"12,34,567,890\",\"expected\":\"12,34,567,890\"}"
+    },
+    {
+      "id": "hap-compile",
+      "pass": true,
+      "evidence": "{\"exit\":0,\"bytes\":24543,\"tail\":\"1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@GeneratePkgContextInfo... after 4 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@GeneratePkgSdkInfo... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessIntegratedHsp... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@BuildNativeWithCmake... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@MakePackInfo... after 3 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@SyscapTransform... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessProfile... after 55 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessRouterMap... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessShareConfig... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessStartupConfig... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@BuildNativeWithNinja... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessResource... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@GenerateLoaderJson... after 6 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessLibs... after 4 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@CompileResource... after 198 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@DoNativeStrip... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@BuildJS... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@CacheNativeLibs... after 8 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@CompileArkTS... after 4 s 185 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@GeneratePkgModuleJson... after 3 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@ProcessCompiledResources... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@PackageHap... after 407 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@PackingCheck... after 5 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@SignHap... after 2 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:default@CollectDebugSymbol... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mFinished :entry:assembleHap... after 1 ms \\u001b[39m\\n> hvigor \\u001b[32mBUILD SUCCESSFUL in 8 s 485 ms \\u001b[39m\\n\\n34 tasks in total: 34 executed, 0 up-to-date\\n> hvigor \\u001b[33mWARN: \\u001b[33mWARN: \\u001b[33m\\u001b[33mArkTS:WARN File: /opt/skills-rsi-home/runs/65669827-39f8-4267-8e73-da7fd575f119/baseline/build-project/entry/src/main/ets/entryability/EntryAbility.ets:4:64\\n Function may throw exceptions. Special handling is required.\\n\\u001b[39m\\u001b[39m\\n\\u001b[39m\\n> hvigor \\u001b[33mWARN: Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.\\n             If needed, configure the signingConfigs in /opt/skills-rsi-home/runs/65669827-39f8-4267-8e73-da7fd575f119/baseline/build-project/build-profile.json5.\\u001b[39m\\n\"}"
+    }
+  ],
+  "scope": "OpenCalc NumberFormatter slice, runtime logic and fresh HarmonyOS HAP build"
+}

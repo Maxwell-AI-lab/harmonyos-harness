@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "skills-rsi.plan/1",
+  "title": "SkillsRSI 沙箱真跑 · OpenCalc 双端 · skillopt",
+  "harness": "deveco",
+  "skillPath": "",
+  "inputPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/input",
+  "devecoHome": "/opt/deveco-home",
+  "prompt": "This is the bounded OpenCalc formatter migration, not the entire application. Source root is android/ and target root is harmony/. Read android/NumberFormatter.kt. Port the behavior of NumberFormatter.format into one ArkTS exported top-level function formatOpenCalcNumber(text: string, decimalSeparatorSymbol: string, groupingSeparatorSymbol: string, indian: boolean): string. Preserve string precision, all operator characters, leading and fractional zeros, empty input, localized separators and the upstream distinction between international and Indian grouping. Read the existing caller harmony/entry/src/main/ets/pages/Index.ets only if needed. Write only harmony/entry/src/main/ets/calculator/NumberFormatter.ets. No imports or platform dependencies in the generated formatter. Use ArkTS types. End after writing the one file. The independent evaluator compiles and checks behavior.",
+  "outputs": [
+    "harmony/entry/src/main/ets/calculator/NumberFormatter.ets"
+  ],
+  "evaluator": {
+    "toolsPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/tools",
+    "argv": [
+      "/opt/command-line-tools/tool/node/bin/node",
+      "{tools}/check.mjs",
+      "{workspace}"
+    ]
+  },
+  "model": "deepseek-v4.1-flash",
+  "baseUrl": "http://127.0.0.1:18080/v1",
+  "thinking": "disabled",
+  "timeoutSeconds": 600,
+  "maxTokens": 8192,
+  "validationScope": "OpenCalc 数字格式化模块。DevEco 原生迁移，双端页面与两条交互回放。",
+  "formal": true,
+  "optimizer": "skillopt",
+  "evalPackage": {
+    "name": "OpenCalc",
+    "contentId": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e"
+  }
+}

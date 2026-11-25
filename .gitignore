@@ -11,3 +11,5 @@ deveco-code/emulator-state/Huawei/
 # 作为验证证据保留的运行日志(上面的 *.log 不适用于这几个)
 !deveco-code/evidence/*.log
 !deveco-code/e2e/*.log
+!skillsrsi/evidence/*.log
+!skillsrsi/evidence/*/*.log

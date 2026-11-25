@@ -1,0 +1,14 @@
+{
+  "harness": "deveco",
+  "hmbotVersion": "0.1.6",
+  "skillSha256": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+  "skillBundleSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+  "migrationDuration": 31.871430451000002,
+  "loaded": true,
+  "finished": true,
+  "unchanged": true,
+  "exitCode": 0,
+  "requests": 10,
+  "requestLimit": null,
+  "limitReached": false
+}

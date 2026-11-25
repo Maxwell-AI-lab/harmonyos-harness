@@ -5,6 +5,7 @@
 - 只想赶紧跑起来：直接看下面的“一分钟版”。
 - 想知道它测过什么、有哪些坑：看[测试报告](DEVECO-CODE-LINUX-TEST-REPORT.md)。
 - 想知道镜像怎么做的、怎么重建、怎么自检：看 [deveco-code/README.md](../deveco-code/README.md)。
+- 想在容器里跑 SkillsRSI（“让模型自己改进迁移技能”的闭环）：看 [2.2-skillsrsi 使用指南](USAGE-harness-dev-2.2-skillsrsi.md)，那个镜像在 2.2 之上多叠了一层。
 
 ## 一分钟版（在 173 服务器上）
 

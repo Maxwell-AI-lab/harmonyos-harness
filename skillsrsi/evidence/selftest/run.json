@@ -1,0 +1,1131 @@
+{
+  "schemaVersion": "skills-rsi.run/1",
+  "id": "7f12ad04-5fb1-4145-964e-f6ea2c6ff81a",
+  "title": "MOCK 自检 · OpenCalc 双端(假模型)",
+  "plan": {
+    "schemaVersion": "skills-rsi.plan/1",
+    "title": "MOCK 自检 · OpenCalc 双端(假模型)",
+    "harness": "deveco",
+    "skillPath": "",
+    "inputPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/input",
+    "devecoHome": "/opt/deveco-home",
+    "prompt": "This is the bounded OpenCalc formatter migration, not the entire application. Source root is android/ and target root is harmony/. Read android/NumberFormatter.kt. Port the behavior of NumberFormatter.format into one ArkTS exported top-level function formatOpenCalcNumber(text: string, decimalSeparatorSymbol: string, groupingSeparatorSymbol: string, indian: boolean): string. Preserve string precision, all operator characters, leading and fractional zeros, empty input, localized separators and the upstream distinction between international and Indian grouping. Read the existing caller harmony/entry/src/main/ets/pages/Index.ets only if needed. Write only harmony/entry/src/main/ets/calculator/NumberFormatter.ets. No imports or platform dependencies in the generated formatter. Use ArkTS types. End after writing the one file. The independent evaluator compiles and checks behavior.",
+    "outputs": [
+      "harmony/entry/src/main/ets/calculator/NumberFormatter.ets"
+    ],
+    "evaluator": {
+      "toolsPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/tools",
+      "argv": [
+        "/opt/command-line-tools/tool/node/bin/node",
+        "{tools}/check.mjs",
+        "{workspace}"
+      ]
+    },
+    "model": "mock-model",
+    "baseUrl": "http://127.0.0.1:18991/v1",
+    "thinking": "disabled",
+    "timeoutSeconds": 600,
+    "maxTokens": 8192,
+    "validationScope": "OpenCalc 数字格式化模块。DevEco 原生迁移，双端页面与两条交互回放。",
+    "formal": true,
+    "optimizer": "arkts-routed-bc",
+    "evalPackage": {
+      "name": "OpenCalc",
+      "contentId": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e"
+    },
+    "optimizationScope": "skill",
+    "targetSkill": "hmbot-migrate",
+    "localValidation": false
+  },
+  "status": "completed",
+  "createdAt": "2026-11-25T11:46:59.250Z",
+  "stages": [
+    {
+      "name": "freeze",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:46:59.253Z",
+      "finishedAt": "2026-11-25T11:46:59.362Z"
+    },
+    {
+      "name": "formal-evaluation-package",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:46:59.371Z",
+      "finishedAt": "2026-11-25T11:46:59.866Z"
+    },
+    {
+      "name": "formal-device-preflight",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:46:59.971Z",
+      "finishedAt": "2026-11-25T11:47:00.195Z"
+    },
+    {
+      "name": "baseline-migration-and-evaluation",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:47:00.195Z",
+      "finishedAt": "2026-11-25T11:47:53.160Z"
+    },
+    {
+      "name": "diagnosis",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:47:53.162Z",
+      "finishedAt": "2026-11-25T11:47:53.634Z"
+    },
+    {
+      "name": "optimize-skill",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:47:53.636Z",
+      "finishedAt": "2026-11-25T11:47:54.059Z"
+    },
+    {
+      "name": "candidate-migration-and-evaluation",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:47:54.059Z",
+      "finishedAt": "2026-11-25T11:48:49.251Z"
+    },
+    {
+      "name": "selection",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:48:49.253Z",
+      "finishedAt": "2026-11-25T11:48:49.439Z"
+    }
+  ],
+  "modelRequests": 5,
+  "accepted": false,
+  "frozen": {
+    "hmbot": {
+      "files": {
+        "LICENSE": "bcfefa365d3bf557b35123ce65a9107527bd87f2d498ae1ff54dd0d1182a6c31",
+        "README.md": "dfd19567f529e7549b229ede48903665182fd481bedbcd08f337f5d599d8ba1e",
+        "agents/hmbot-reviewer.md": "ba6eb4cc41391d0aed61e8db1a1ca364d0a01cba9329c4f31552976f4eedaac4",
+        "agents/hmbot-worker.md": "1134448b0100eb183d4e339223831bcea96716b7eb548cdf66281c82c3ba4b17",
+        "agents/hmbot.md": "3a15303060805f18f34df4c2f2d876f97db9e534425b797d92028841916865aa",
+        "commands/hmbot.md": "4914861e92f38884b3ed7d57b9bc3a3678163b4c143779f3eb3489a5ed5075fd",
+        "dist/index.js": "23f514d907523a743d86bbc71768ff025f940035eff5da34781e8ce3c78379ab",
+        "engine/tui/hmbot-workflow-progress.tsx": "d7f000da94e929155d1df9e8e052fa3119f167a7c84a488d4f3ed221e766baa6",
+        "index.js": "45ace06821efa9c326b00db70989589c5a15bc3971f0f5c6f4a3553bdd0de1ea",
+        "install.mjs": "494052076fe4a5306d9976297453ff0807d5d80a4e9bd43c97d2dc7bd80e0af2",
+        "manifest.json": "ed6c463b826a2a8824b4bcba66b17f9e8330fc7a3d19dadd485e01943554ba47",
+        "package.json": "8107199b31397bd5535658b163d303a379fcf33b219a47d9283c1c37a78ea59a",
+        "skills/hmbot-dependency-strategy/FILES.md": "cd6af4f758e563c1e0e10df5c220946fb392575995bec7a2edec6b4f9ebb6f64",
+        "skills/hmbot-dependency-strategy/SKILL.md": "f9d4ac5ea55386712cd9039a34f69089b2cf886d3399f323232d478684844072",
+        "skills/hmbot-dependency-strategy/references/official-sdk-links.md": "b85a0f0acd7caaebbe693f1e82ad4c25cfbf62958b82832b6802fd7bfd048dad",
+        "skills/hmbot-dependency-strategy/references/semantic-probes.md": "0e80e0b9a793a4521a08a3a4b3d9a19eaef26a7686ca24ed1ab0c3d13beff0e1",
+        "skills/hmbot-mig-arch/FILES.md": "17a28468f2149599dc0749425c13358ea156c2d134275361477b3f681b994adc",
+        "skills/hmbot-mig-arch/SKILL.md": "822611c47d2c8019732accff2d139d18b07c16b98ca38a915a93db560b279c1e",
+        "skills/hmbot-mig-arch/agents/openai.yaml": "883cb47413b5f4e4244846f8e4c0a0e1ed8e862e052a4d3af90fe87442b63915",
+        "skills/hmbot-mig-arch/references/architecture-model.md": "8013a47ba6026458e7f73b789eaddb15942f36964e84e37dab99690cf5ced546",
+        "skills/hmbot-mig-arch/references/harmony-mapping.md": "b041e6fd8135012943ac099ca59440f24e969d3ebf06f291eebc3005a1bf0dc6",
+        "skills/hmbot-mig-arch/references/module-spec.md": "22ce918e0adc1c50443207a7510162c2891508217357331f2248859c5bf72926",
+        "skills/hmbot-mig-arch/references/tools-and-evidence.md": "f7b258ae1be7b7ef183919c80d1327a7bb01e1222063e721e5b7d701c779a4ba",
+        "skills/hmbot-migrate/FILES.md": "c5c08b3d8ba30f3ad186b862c6c95bf6f36f9e5c0a60a32751f237fe80a74f27",
+        "skills/hmbot-migrate/SKILL.md": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+        "skills/hmbot-migrate/references/android-ui-defaults.md": "e91c983e3dab31f7b1a21773e2e7829ed26475bb78b6c2b184b8738128231de7",
+        "skills/hmbot-migrate/references/assets-and-docs.md": "d8d8b345603514b2ba810fdbfc0b9b5d64594ef785819a67779564ef1f14ea61",
+        "skills/hmbot-migrate/references/modular-work.md": "be2b8c0168a9c1a90036c600ff8e86ea7687a752ec874afe3343a6f613934660",
+        "skills/hmbot-migrate/templates/hmbot_parallel_tasks.js": "93ef2ae5361bc469c00d9b640d6b55bb56eb50ac4507d46681ebc04a6c8d6175"
+      },
+      "digest": "4dd1d06aa0e5908660c981715c83b52715788a1f1ed29eb70f6c29b85da1cb5d"
+    },
+    "skill": {
+      "files": {
+        "FILES.md": "c5c08b3d8ba30f3ad186b862c6c95bf6f36f9e5c0a60a32751f237fe80a74f27",
+        "SKILL.md": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+        "references/android-ui-defaults.md": "e91c983e3dab31f7b1a21773e2e7829ed26475bb78b6c2b184b8738128231de7",
+        "references/assets-and-docs.md": "d8d8b345603514b2ba810fdbfc0b9b5d64594ef785819a67779564ef1f14ea61",
+        "references/modular-work.md": "be2b8c0168a9c1a90036c600ff8e86ea7687a752ec874afe3343a6f613934660",
+        "templates/hmbot_parallel_tasks.js": "93ef2ae5361bc469c00d9b640d6b55bb56eb50ac4507d46681ebc04a6c8d6175"
+      },
+      "digest": "09f0b83fa1b0416152faf04a09f2df2e7d49c10c6cb56bab6efd5a335e7ebaa5"
+    },
+    "input": {
+      "files": {
+        "android/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+        "android/NumberFormatter.kt": "affd4576cccde79821ba9d73c9fd9ca2aa6f12899a55747d36a8332c9420dfce",
+        "harmony/AppScope/app.json5": "85a9ca7b5e09d41c84da64b59c7a93c5f724de11e486a1580b3b4a7e9e32b5a3",
+        "harmony/AppScope/resources/base/element/string.json": "f852dc21b3987ea58e5d9afa211455f036b74d9b2d0f6318dd3f6e1a953ac21a",
+        "harmony/AppScope/resources/base/media/app_icon.svg": "c0cb5673dc0c2066d09dd673f1de250cbb7c7dfb1a0d7d4e201218843cdad337",
+        "harmony/build-profile.json5": "63dce6bd186bb4dfc005991ef2b516b2210615cff627b723fdfba4fd499faae6",
+        "harmony/code-linter.json5": "f557c3bcdb40c64c986bffed9628310cc7a79fb7d2642c1c8b8d265fd92e25ad",
+        "harmony/entry/build-profile.json5": "7727b3a9bf7e522930cb1ec259c0bd26c948d09d37d0d724aab23f5f499a4004",
+        "harmony/entry/hvigorfile.ts": "1ef08cf4d5a2995964b0213834dd91de3afb8845aae53178016e1c56df0844b6",
+        "harmony/entry/obfuscation-rules.txt": "42c563d696cdf0a0367c39f564e752d82ec15e394549f826848228680674a4ef",
+        "harmony/entry/oh-package.json5": "e43c301543587b2ce20c0b51363e9d4102aab37f19a69f670ef7aaced1a98ed7",
+        "harmony/entry/src/main/ets/entryability/EntryAbility.ets": "416248d2ddd8c4b173c086a5d64137359091ef91d83c9d5ec7726cca3694a9d9",
+        "harmony/entry/src/main/ets/pages/Index.ets": "93e316e1bdb886963bc4fef8d3b4d9b6693b7133681cd487752fa8734b2ebd72",
+        "harmony/entry/src/main/module.json5": "4cd21d92e758c77d3e43366c758d7e97193570343ad1f67c3f65bd49e3825803",
+        "harmony/entry/src/main/resources/base/element/color.json": "e1dea1114b9f447d52abb6ea3e4d0b441025ec5c09f1207dad3cdd16ac2b8d0c",
+        "harmony/entry/src/main/resources/base/profile/main_pages.json": "4f7fe5b56dce484ae25118a1c4e97e9d450c18301f851c88d4357b76ac6b9485",
+        "harmony/hvigor/hvigor-config.json5": "e9c6675d4c479e3ac3cd3d36060892e93d53acb2252e3936ce145024bcd04ac2",
+        "harmony/hvigorfile.ts": "b8882fb4b6da475eeeeb64875e8f80a1bdfe4ea4b9d943396e91be45478a4758",
+        "harmony/oh-package-lock.json5": "63261e4afee2280ca28b240d99956d666f0efc6be6b2cc76dd53470c10d3cf71",
+        "harmony/oh-package.json5": "d615485f0ded5442af6435ba1ac1ef43a57a79d9d6288538663ec5f9bac88fcb"
+      },
+      "digest": "d05c15f5d41ff7b92a52beaa61984a89a8d328707feaf1e21368acc6798d2b1b"
+    },
+    "evaluator": {
+      "files": {
+        "check.mjs": "d790c27187fd1de9648c03cfed8455898cc271a3d854121f4b56b0b5c47b6dd2",
+        "environment.json": "bebc9b9ed5a8c98799ff94e4ca89f97cc56420c217fc0dbb14a843f4ba2cbae5",
+        "formal.json": "9c9fbd807a5f68006e918dc7313abd23ec24c93ed9c18a045617dfc19cab9e8c"
+      },
+      "digest": "dd8706b05fd289f947e53f9b4f5bd248a4ed74ee1f8981c16987932865cd2670"
+    }
+  },
+  "planDigest": "14240ece77002fe7e7c9f05a351dcc85c59c773da6d352ae2a494c7874145930",
+  "formal": {
+    "entry": "online",
+    "mutator": "arkts-routed-bc",
+    "optimizationScope": "skill",
+    "targetSkill": "hmbot-migrate",
+    "localValidation": false,
+    "optimizationModel": "mock-model",
+    "judge": {
+      "model": "mock-model",
+      "endpoint": "http://127.0.0.1:18991/v1",
+      "images": false
+    },
+    "calibrated": false,
+    "evaluation": {
+      "appName": "OpenCalc",
+      "schema": "skillopt-eval-package/2",
+      "contentId": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e",
+      "runner": {
+        "mode": "package",
+        "name": "a2h-eval-runner",
+        "version": "1.0.0",
+        "package_content_id": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e",
+        "entrypoints": {
+          "lint": "lint_journeys.py",
+          "replay": "replay.py",
+          "pages": "pages_evidence.py"
+        }
+      }
+    },
+    "acceptance": {
+      "primary": {
+        "metric": "interactions.pass_rate",
+        "min_gain": 0.01
+      },
+      "guards": [
+        "pages.pass_rate"
+      ],
+      "absolute_goals": {},
+      "allow_local_gain_for_c": false
+    },
+    "budget": {
+      "max_candidates": 1,
+      "max_active_hours": 1,
+      "max_pause_hours": 0,
+      "finalization_reserve_sec": 60,
+      "max_local_attempts_per_candidate": 3,
+      "max_invalid_retries_per_unit": 1
+    },
+    "routing": {
+      "items": [
+        {
+          "schema": "skillopt-work-item/2",
+          "id": "w0001",
+          "mode": "B",
+          "target_skill": "hmbot-migrate",
+          "allowed_paths": [
+            "skills/hmbot-migrate"
+          ],
+          "attribution_status": "proposed",
+          "symptom": "[stub] placeholder symptom used only for the plumbing test",
+          "expected_behavior": "[stub] placeholder expectation used only for the plumbing test",
+          "reproduction": "[stub] placeholder reproduction used only for the plumbing test",
+          "evidence_refs": [
+            {
+              "path": "baseline/migration-trace.jsonl",
+              "size": 24366,
+              "sha256": "0e017eed1a06157f95fbcf0f6984020087e8a0fe052e100b799f593fd6590cd7"
+            }
+          ],
+          "validation_refs": [
+            {
+              "path": "baseline/build-checks.json",
+              "size": 5833,
+              "sha256": "7be5c79f1769ac7c1813ecab60a00cc16d982b58475b40454c85f6dd8290790f"
+            }
+          ]
+        }
+      ],
+      "analysis": {
+        "path": "v2/analysis/analysis.json",
+        "size": 1057,
+        "sha256": "6edcf6de1e591eded2d611d3642b764d16a00080f9491b2c969b73fa88f0e609"
+      },
+      "assetIdentity": {
+        "name": "skillopt-assets",
+        "business": "a2h",
+        "sha256": "dbc49d509fa2a6a6546035ceaa5fafa48f583dd37a7bb8771e1050affd6173ce"
+      },
+      "targets": [
+        "hmbot-migrate"
+      ],
+      "baselineSkills": "/opt/skills-rsi-home/runs/7f12ad04-5fb1-4145-964e-f6ea2c6ff81a/state/kernel/skills"
+    },
+    "candidates": [
+      {
+        "id": "c0001",
+        "optimization": {
+          "status": "candidate_ready",
+          "commit": "5501ddef1912cd8b3d7c86f987f6da20fdab4e5b",
+          "changes": [
+            {
+              "path": "skills/hmbot-migrate/SKILL.md",
+              "change_kind": "modified",
+              "work_item_ids": [
+                "w0001"
+              ],
+              "test_refs": [],
+              "generation_ref": {
+                "path": "candidates/c0001/mutation-result.json",
+                "size": 639,
+                "sha256": "d0fcb54665c7370239d9597d11ea03cf93ab5fcef926d56b78dbcc1f0aace7b5"
+              }
+            }
+          ],
+          "summary": "[桩] 在手册末尾追加了一段占位文字,只为验证改写通路。",
+          "targets": [
+            "hmbot-migrate"
+          ]
+        },
+        "decision": {
+          "schema": "skillopt-qualification/2",
+          "candidate_id": "c0001",
+          "baseline_commit": "88f90c4179cc274a388db0cc5a7b41731d176146",
+          "candidate_commit": "5501ddef1912cd8b3d7c86f987f6da20fdab4e5b",
+          "manifest_hash": "1b4924ebbb7c1d32ca9d5ee066b1cf7792e7857453e3a84fcd53fe1e743fc667",
+          "status": "rejected",
+          "coverage": {
+            "required": 2,
+            "completed": 2,
+            "valid": 2,
+            "missing_units": []
+          },
+          "per_app": [
+            {
+              "app_id": "app-98f37bb6f438b595",
+              "samples": {
+                "baseline": {
+                  "interactions.pass_rate": {
+                    "raw": [
+                      1
+                    ],
+                    "median": 1
+                  },
+                  "pages.pass_rate": {
+                    "raw": [
+                      1
+                    ],
+                    "median": 1
+                  }
+                },
+                "candidate": {
+                  "interactions.pass_rate": {
+                    "raw": [
+                      1
+                    ],
+                    "median": 1
+                  },
+                  "pages.pass_rate": {
+                    "raw": [
+                      1
+                    ],
+                    "median": 1
+                  }
+                }
+              },
+              "primary_gain": 0,
+              "guard_gains": {
+                "pages.pass_rate": 0
+              },
+              "non_regression": true,
+              "threshold_met": false,
+              "hard_gates_pass": true,
+              "comparison_valid": true
+            }
+          ],
+          "relative_improvement": false,
+          "local_improvement": false,
+          "basis": "e2e_gain",
+          "absolute_target_met": null,
+          "reason_codes": [
+            "no_improvement"
+          ],
+          "evidence_refs": [
+            {
+              "path": "candidates/c0001/mutation/generation-summary.json",
+              "size": 214,
+              "sha256": "414eb42195270790d7b7b2df3cd4fe73058ef32ff08b927a91f363ba5599563b"
+            },
+            {
+              "path": "baseline/device-report.json",
+              "size": 1344,
+              "sha256": "121f2bc0590362d84cf06cdd7e851cc9ca7b7f1de470883e39aaef5d0fc6f9d5"
+            },
+            {
+              "path": "baseline/build-checks.json",
+              "size": 5833,
+              "sha256": "7be5c79f1769ac7c1813ecab60a00cc16d982b58475b40454c85f6dd8290790f"
+            },
+            {
+              "path": "baseline/compile.log",
+              "size": 3160,
+              "sha256": "77653a1c17b281b26706d2d365e5e108865ab21c8ca78970e5b7d7659ad0bd0f"
+            },
+            {
+              "path": "baseline/execution-order-audit.json",
+              "size": 406,
+              "sha256": "f3e9fce33c253d2e62330b8488722c530d935f940cf029ee246df1076a3484e1"
+            },
+            {
+              "path": "baseline/hilog-scan.json",
+              "size": 30,
+              "sha256": "4d92a9f031894f9e8d8b954a99e50bf191ed15aefc6848bf1032b705b2bdbdb4"
+            },
+            {
+              "path": "baseline/install.json",
+              "size": 497,
+              "sha256": "3e6bda00e4ea71e37c2bc6dd81133bf7e2486219f2e8ba8165d9e421f448bf7f"
+            },
+            {
+              "path": "baseline/migration-trace.jsonl",
+              "size": 24366,
+              "sha256": "0e017eed1a06157f95fbcf0f6984020087e8a0fe052e100b799f593fd6590cd7"
+            },
+            {
+              "path": "baseline/native-receipt.json",
+              "size": 413,
+              "sha256": "92495f13f0a7278372086dc025307868b9cbd80628611cce30a60009d15f7a56"
+            },
+            {
+              "path": "baseline/pages/P01.jpeg",
+              "size": 94966,
+              "sha256": "c7211ad9f61f8c374d52354b0426b58ef7721fd1793b76be5a4184501e2e6591"
+            },
+            {
+              "path": "baseline/pages/P01.json",
+              "size": 29301,
+              "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+            },
+            {
+              "path": "baseline/pages/pages.json",
+              "size": 353,
+              "sha256": "abc3c77901e28a5d3ce25c9ac627f4a4c795f89a6053352685d57bb6a966ff92"
+            },
+            {
+              "path": "baseline/replay/C01-2-dump.json",
+              "size": 29949,
+              "sha256": "47cddb845462cf80e501cc95e429cb6bc7441990432e3cf27cf8fba74e6f4ee7"
+            },
+            {
+              "path": "baseline/replay/C01-2.jpeg",
+              "size": 101600,
+              "sha256": "b1fb29efe94dc876f5fac5fda9acdb8a8be4465cc35d5d94ff3accd97d045d5b"
+            },
+            {
+              "path": "baseline/replay/C01-step0-before.json",
+              "size": 29301,
+              "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+            },
+            {
+              "path": "baseline/replay/C02-3-dump.json",
+              "size": 29949,
+              "sha256": "0f4b48fe42032a5704a3e2dd3b8d53615a242728ab7fd063e97a9783e9d49e97"
+            },
+            {
+              "path": "baseline/replay/C02-3.jpeg",
+              "size": 101309,
+              "sha256": "8f58d196be3ad9afef26208030137cd1603cc7ae9f2bebaefab61a9444d99429"
+            },
+            {
+              "path": "baseline/replay/C02-step0-before.json",
+              "size": 29301,
+              "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+            },
+            {
+              "path": "baseline/replay/C02-step1-before.json",
+              "size": 29301,
+              "sha256": "5cfe458d3f41c1df133c817904e542ad45fa604e122a19dba267b4126ed5d1a3"
+            },
+            {
+              "path": "baseline/replay/_current-dump.json",
+              "size": 29949,
+              "sha256": "0f4b48fe42032a5704a3e2dd3b8d53615a242728ab7fd063e97a9783e9d49e97"
+            },
+            {
+              "path": "baseline/replay-final.json",
+              "size": 448,
+              "sha256": "7bf8fd4e525bd727a62187b0ac05c91317b7cf2a58e788c9baa2ba9231ffc6d0"
+            },
+            {
+              "path": "baseline/replay-mechanical.json",
+              "size": 3358,
+              "sha256": "e288fb2e9ee20d1e21c2d1303ac0497d8ceee259979a5d270bdd68c382bd37d4"
+            },
+            {
+              "path": "baseline/replay.json",
+              "size": 3394,
+              "sha256": "bc95d79db428e3d8f38c45cda77bf143acf7af781f6e155c5a95014d0a737a86"
+            },
+            {
+              "path": "baseline/result-final.json",
+              "size": 586,
+              "sha256": "89f1a2f06c88c56261ca1b3407b907d98548ca94f3d79dd2530b04b172ffb5e5"
+            },
+            {
+              "path": "baseline/round.env",
+              "size": 88,
+              "sha256": "a9edcf8ba6c1e9632bb89b9a2a5c7a12966cdbf6678bf1426d779b79fdcf8935"
+            },
+            {
+              "path": "candidate/device-report.json",
+              "size": 1367,
+              "sha256": "ccd7a63f06437dfeb9e075734ee51cdf1e1b224bc82beaf59ecf629faa78c8ce"
+            },
+            {
+              "path": "candidate/build-checks.json",
+              "size": 5833,
+              "sha256": "1060b736432af98e5187aa71e6052616be6c38568a57423c4cfeec15b99e0a35"
+            },
+            {
+              "path": "candidate/compile.log",
+              "size": 3160,
+              "sha256": "0fff3ac1cea1c2e99559faa05f39e30f1934eb95d79da58c541d2d7cb54a99a1"
+            },
+            {
+              "path": "candidate/execution-order-audit.json",
+              "size": 407,
+              "sha256": "10dbe469e582aa2725c3356c1f08e6b2a19c678360f238a083280815a3472d9d"
+            },
+            {
+              "path": "candidate/hilog-scan.json",
+              "size": 30,
+              "sha256": "4d92a9f031894f9e8d8b954a99e50bf191ed15aefc6848bf1032b705b2bdbdb4"
+            },
+            {
+              "path": "candidate/install.json",
+              "size": 498,
+              "sha256": "c324591f13af87d151f50dbd93906c8569c170be1bf8cd1d35f5f296c0a5872c"
+            },
+            {
+              "path": "candidate/migration-trace.jsonl",
+              "size": 24522,
+              "sha256": "f5d0534e3cd2a7280f007c158d223a9291b8acdd0c148b4a8e41c7c51b8b74f4"
+            },
+            {
+              "path": "candidate/native-receipt.json",
+              "size": 413,
+              "sha256": "79910aefb139770981c68f9d1f438eb28dbe48f2fe382a96be833b9f4d9918db"
+            },
+            {
+              "path": "candidate/pages/P01.jpeg",
+              "size": 95098,
+              "sha256": "df6bb8270d1c8a90852955edce1fb5260ceddac28b02df5e5699cf4662d2e9fa"
+            },
+            {
+              "path": "candidate/pages/P01.json",
+              "size": 29301,
+              "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+            },
+            {
+              "path": "candidate/pages/pages.json",
+              "size": 353,
+              "sha256": "fca903a8670c702368620976679b6628e4b50d804c82c7a9457bb3dc36c9b1ab"
+            },
+            {
+              "path": "candidate/replay/C01-2-dump.json",
+              "size": 29949,
+              "sha256": "138cd1e3d4ebb53d9c3df57f9f713da4c8d1bc2d33c0fcfe95cc47edc2e8e6c8"
+            },
+            {
+              "path": "candidate/replay/C01-2.jpeg",
+              "size": 101797,
+              "sha256": "678a43c9627723aa6f1725423045e642a327a57f2664bd7d9a131ccdb3606ab8"
+            },
+            {
+              "path": "candidate/replay/C01-step0-before.json",
+              "size": 29301,
+              "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+            },
+            {
+              "path": "candidate/replay/C02-3-dump.json",
+              "size": 29949,
+              "sha256": "56ed8f77f3e4970b752bda21e4b6d50ffd5d0d9baeef10ebbc50e3b66a62abb8"
+            },
+            {
+              "path": "candidate/replay/C02-3.jpeg",
+              "size": 101457,
+              "sha256": "1a573cb257dfe242ae3e7c19d4d46468da23695f9067caf0df242be63158d7ab"
+            },
+            {
+              "path": "candidate/replay/C02-step0-before.json",
+              "size": 29301,
+              "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+            },
+            {
+              "path": "candidate/replay/C02-step1-before.json",
+              "size": 29301,
+              "sha256": "44f6a5864b82a5260a2965080880a24bbb86f00ac983bb441665676d690336b5"
+            },
+            {
+              "path": "candidate/replay/_current-dump.json",
+              "size": 29949,
+              "sha256": "56ed8f77f3e4970b752bda21e4b6d50ffd5d0d9baeef10ebbc50e3b66a62abb8"
+            },
+            {
+              "path": "candidate/replay-final.json",
+              "size": 448,
+              "sha256": "7bf8fd4e525bd727a62187b0ac05c91317b7cf2a58e788c9baa2ba9231ffc6d0"
+            },
+            {
+              "path": "candidate/replay-mechanical.json",
+              "size": 3365,
+              "sha256": "b45617328147dda2f806d8ebc7e12782e00114bf84842136cec0105e2dbc6bdd"
+            },
+            {
+              "path": "candidate/replay.json",
+              "size": 3401,
+              "sha256": "0cd8c8c89efd10a1ee71d1e7034dba35203784108795ab789881831526f5d30d"
+            },
+            {
+              "path": "candidate/result-final.json",
+              "size": 586,
+              "sha256": "e97781e487c73c40696947a7eae604ae87170cd4de3d3318769aeb094b085637"
+            },
+            {
+              "path": "candidate/round.env",
+              "size": 88,
+              "sha256": "a9edcf8ba6c1e9632bb89b9a2a5c7a12966cdbf6678bf1426d779b79fdcf8935"
+            }
+          ],
+          "decided_at": "2026-11-25T11:48:49.429Z",
+          "local_validation": "not_applicable"
+        },
+        "measurement": "candidate"
+      }
+    ]
+  },
+  "native": {
+    "baseline": {
+      "harness": "deveco",
+      "hmbotVersion": "0.1.6",
+      "skillSha256": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+      "skillBundleSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+      "migrationDuration": 9.760349791000001,
+      "loaded": true,
+      "finished": true,
+      "unchanged": true,
+      "exitCode": 0,
+      "requests": 4,
+      "requestLimit": null,
+      "limitReached": false
+    },
+    "candidate": {
+      "harness": "deveco",
+      "hmbotVersion": "0.1.6",
+      "skillSha256": "9e93e6f3306e1475953c1c03c02f067464e36bef6aec2424393a1466deef88ea",
+      "skillBundleSha256": "2ee355c0452a28f52299c458ff4cf471d2db0de188f8764c039ada56a03f0a9f",
+      "migrationDuration": 9.010232842000004,
+      "loaded": true,
+      "finished": true,
+      "unchanged": true,
+      "exitCode": 0,
+      "requests": 4,
+      "requestLimit": null,
+      "limitReached": false
+    }
+  },
+  "judgeModelIdentity": "mock-model",
+  "baseline": {
+    "schemaVersion": "skills-rsi.checks/1",
+    "checks": [
+      {
+        "id": "C01",
+        "pass": true,
+        "evidence": "[桩·照抄机械回放] tap '格式化' @(628, 836)；sleep 1；snap C01-2；文案齐 all=['1,234,567.890'] any=[]",
+        "status": "PASS"
+      },
+      {
+        "id": "C02",
+        "pass": true,
+        "evidence": "[桩·照抄机械回放] tap '国际数位分组' @(628, 640)；tap '格式化' @(628, 836)；sleep 1；snap C02-3；文案齐 all=['12,34,567.890'] any=[]",
+        "status": "PASS"
+      },
+      {
+        "id": "P01",
+        "pass": true,
+        "evidence": "[桩·页面取证] foreground_ok=True reached=True texts=['OpenCalc 格式化试用', '1234567.890', '国际数位分组', '格式化', '07', '47']",
+        "status": "PASS"
+      }
+    ],
+    "scope": "OpenCalc NumberFormatter slice, runtime logic and fresh HarmonyOS HAP build",
+    "score": 1,
+    "artifactsDigest": "9f45ddfa9179b0668420618696172a388f1f7e5b220a3564fc4e7b245f7b9a31",
+    "migrationDuration": 9.760349791000001,
+    "formal": {
+      "packageSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+      "hapSha256": "ee93a35dd7cdbf4227a6e4a7852c173bcde4b4153b04b45db941a1dfb08bb81e",
+      "validity": "valid",
+      "metrics": {
+        "pages.pass_rate": 1,
+        "interactions.pass_rate": 1,
+        "duration_sec": 9.760349791000001
+      },
+      "gates": {
+        "package_identity": true,
+        "build_install": true,
+        "closeout": true,
+        "execution_order": false,
+        "critical_assertions": true,
+        "required_metrics": true
+      },
+      "evidence": [
+        "baseline/build-checks.json",
+        "baseline/compile.log",
+        "baseline/execution-order-audit.json",
+        "baseline/hilog-scan.json",
+        "baseline/install.json",
+        "baseline/migration-trace.jsonl",
+        "baseline/native-receipt.json",
+        "baseline/pages/P01.jpeg",
+        "baseline/pages/P01.json",
+        "baseline/pages/pages.json",
+        "baseline/replay/C01-2-dump.json",
+        "baseline/replay/C01-2.jpeg",
+        "baseline/replay/C01-step0-before.json",
+        "baseline/replay/C02-3-dump.json",
+        "baseline/replay/C02-3.jpeg",
+        "baseline/replay/C02-step0-before.json",
+        "baseline/replay/C02-step1-before.json",
+        "baseline/replay/_current-dump.json",
+        "baseline/replay-final.json",
+        "baseline/replay-mechanical.json",
+        "baseline/replay.json",
+        "baseline/result-final.json",
+        "baseline/round.env"
+      ]
+    }
+  },
+  "optimizationModelIdentity": "mock-model",
+  "diagnosis": [
+    {
+      "problem": "[stub] placeholder symptom used only for the plumbing test",
+      "target": "hmbot-migrate",
+      "reproduction": "[stub] placeholder reproduction used only for the plumbing test",
+      "evidence": "baseline/migration-trace.jsonl"
+    }
+  ],
+  "optimization": {
+    "status": "candidate_ready",
+    "commit": "5501ddef1912cd8b3d7c86f987f6da20fdab4e5b",
+    "changes": [
+      {
+        "path": "skills/hmbot-migrate/SKILL.md",
+        "change_kind": "modified",
+        "work_item_ids": [
+          "w0001"
+        ],
+        "test_refs": [],
+        "generation_ref": {
+          "path": "candidates/c0001/mutation-result.json",
+          "size": 639,
+          "sha256": "d0fcb54665c7370239d9597d11ea03cf93ab5fcef926d56b78dbcc1f0aace7b5"
+        }
+      }
+    ],
+    "summary": "[桩] 在手册末尾追加了一段占位文字,只为验证改写通路。",
+    "targets": [
+      "hmbot-migrate"
+    ]
+  },
+  "candidate": {
+    "schemaVersion": "skills-rsi.checks/1",
+    "checks": [
+      {
+        "id": "C01",
+        "pass": true,
+        "evidence": "[桩·照抄机械回放] tap '格式化' @(628, 836)；sleep 1；snap C01-2；文案齐 all=['1,234,567.890'] any=[]",
+        "status": "PASS"
+      },
+      {
+        "id": "C02",
+        "pass": true,
+        "evidence": "[桩·照抄机械回放] tap '国际数位分组' @(628, 640)；tap '格式化' @(628, 836)；sleep 1；snap C02-3；文案齐 all=['12,34,567.890'] any=[]",
+        "status": "PASS"
+      },
+      {
+        "id": "P01",
+        "pass": true,
+        "evidence": "[桩·页面取证] foreground_ok=True reached=True texts=['OpenCalc 格式化试用', '1234567.890', '国际数位分组', '格式化', '07', '48']",
+        "status": "PASS"
+      }
+    ],
+    "scope": "OpenCalc NumberFormatter slice, runtime logic and fresh HarmonyOS HAP build",
+    "score": 1,
+    "artifactsDigest": "9f45ddfa9179b0668420618696172a388f1f7e5b220a3564fc4e7b245f7b9a31",
+    "migrationDuration": 9.010232842000004,
+    "formal": {
+      "packageSha256": "2ee355c0452a28f52299c458ff4cf471d2db0de188f8764c039ada56a03f0a9f",
+      "hapSha256": "43190a77edb9945e50a453bd299bf1cc3a9c9ef4c02732b3ffe796db649faec6",
+      "validity": "valid",
+      "metrics": {
+        "pages.pass_rate": 1,
+        "interactions.pass_rate": 1,
+        "duration_sec": 9.010232842000004
+      },
+      "gates": {
+        "package_identity": true,
+        "build_install": true,
+        "closeout": true,
+        "execution_order": false,
+        "critical_assertions": true,
+        "required_metrics": true
+      },
+      "evidence": [
+        "candidate/build-checks.json",
+        "candidate/compile.log",
+        "candidate/execution-order-audit.json",
+        "candidate/hilog-scan.json",
+        "candidate/install.json",
+        "candidate/migration-trace.jsonl",
+        "candidate/native-receipt.json",
+        "candidate/pages/P01.jpeg",
+        "candidate/pages/P01.json",
+        "candidate/pages/pages.json",
+        "candidate/replay/C01-2-dump.json",
+        "candidate/replay/C01-2.jpeg",
+        "candidate/replay/C01-step0-before.json",
+        "candidate/replay/C02-3-dump.json",
+        "candidate/replay/C02-3.jpeg",
+        "candidate/replay/C02-step0-before.json",
+        "candidate/replay/C02-step1-before.json",
+        "candidate/replay/_current-dump.json",
+        "candidate/replay-final.json",
+        "candidate/replay-mechanical.json",
+        "candidate/replay.json",
+        "candidate/result-final.json",
+        "candidate/round.env"
+      ]
+    }
+  },
+  "decision": {
+    "schema": "skillopt-qualification/2",
+    "candidate_id": "c0001",
+    "baseline_commit": "88f90c4179cc274a388db0cc5a7b41731d176146",
+    "candidate_commit": "5501ddef1912cd8b3d7c86f987f6da20fdab4e5b",
+    "manifest_hash": "1b4924ebbb7c1d32ca9d5ee066b1cf7792e7857453e3a84fcd53fe1e743fc667",
+    "status": "rejected",
+    "coverage": {
+      "required": 2,
+      "completed": 2,
+      "valid": 2,
+      "missing_units": []
+    },
+    "per_app": [
+      {
+        "app_id": "app-98f37bb6f438b595",
+        "samples": {
+          "baseline": {
+            "interactions.pass_rate": {
+              "raw": [
+                1
+              ],
+              "median": 1
+            },
+            "pages.pass_rate": {
+              "raw": [
+                1
+              ],
+              "median": 1
+            }
+          },
+          "candidate": {
+            "interactions.pass_rate": {
+              "raw": [
+                1
+              ],
+              "median": 1
+            },
+            "pages.pass_rate": {
+              "raw": [
+                1
+              ],
+              "median": 1
+            }
+          }
+        },
+        "primary_gain": 0,
+        "guard_gains": {
+          "pages.pass_rate": 0
+        },
+        "non_regression": true,
+        "threshold_met": false,
+        "hard_gates_pass": true,
+        "comparison_valid": true
+      }
+    ],
+    "relative_improvement": false,
+    "local_improvement": false,
+    "basis": "e2e_gain",
+    "absolute_target_met": null,
+    "reason_codes": [
+      "no_improvement"
+    ],
+    "evidence_refs": [
+      {
+        "path": "candidates/c0001/mutation/generation-summary.json",
+        "size": 214,
+        "sha256": "414eb42195270790d7b7b2df3cd4fe73058ef32ff08b927a91f363ba5599563b"
+      },
+      {
+        "path": "baseline/device-report.json",
+        "size": 1344,
+        "sha256": "121f2bc0590362d84cf06cdd7e851cc9ca7b7f1de470883e39aaef5d0fc6f9d5"
+      },
+      {
+        "path": "baseline/build-checks.json",
+        "size": 5833,
+        "sha256": "7be5c79f1769ac7c1813ecab60a00cc16d982b58475b40454c85f6dd8290790f"
+      },
+      {
+        "path": "baseline/compile.log",
+        "size": 3160,
+        "sha256": "77653a1c17b281b26706d2d365e5e108865ab21c8ca78970e5b7d7659ad0bd0f"
+      },
+      {
+        "path": "baseline/execution-order-audit.json",
+        "size": 406,
+        "sha256": "f3e9fce33c253d2e62330b8488722c530d935f940cf029ee246df1076a3484e1"
+      },
+      {
+        "path": "baseline/hilog-scan.json",
+        "size": 30,
+        "sha256": "4d92a9f031894f9e8d8b954a99e50bf191ed15aefc6848bf1032b705b2bdbdb4"
+      },
+      {
+        "path": "baseline/install.json",
+        "size": 497,
+        "sha256": "3e6bda00e4ea71e37c2bc6dd81133bf7e2486219f2e8ba8165d9e421f448bf7f"
+      },
+      {
+        "path": "baseline/migration-trace.jsonl",
+        "size": 24366,
+        "sha256": "0e017eed1a06157f95fbcf0f6984020087e8a0fe052e100b799f593fd6590cd7"
+      },
+      {
+        "path": "baseline/native-receipt.json",
+        "size": 413,
+        "sha256": "92495f13f0a7278372086dc025307868b9cbd80628611cce30a60009d15f7a56"
+      },
+      {
+        "path": "baseline/pages/P01.jpeg",
+        "size": 94966,
+        "sha256": "c7211ad9f61f8c374d52354b0426b58ef7721fd1793b76be5a4184501e2e6591"
+      },
+      {
+        "path": "baseline/pages/P01.json",
+        "size": 29301,
+        "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+      },
+      {
+        "path": "baseline/pages/pages.json",
+        "size": 353,
+        "sha256": "abc3c77901e28a5d3ce25c9ac627f4a4c795f89a6053352685d57bb6a966ff92"
+      },
+      {
+        "path": "baseline/replay/C01-2-dump.json",
+        "size": 29949,
+        "sha256": "47cddb845462cf80e501cc95e429cb6bc7441990432e3cf27cf8fba74e6f4ee7"
+      },
+      {
+        "path": "baseline/replay/C01-2.jpeg",
+        "size": 101600,
+        "sha256": "b1fb29efe94dc876f5fac5fda9acdb8a8be4465cc35d5d94ff3accd97d045d5b"
+      },
+      {
+        "path": "baseline/replay/C01-step0-before.json",
+        "size": 29301,
+        "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+      },
+      {
+        "path": "baseline/replay/C02-3-dump.json",
+        "size": 29949,
+        "sha256": "0f4b48fe42032a5704a3e2dd3b8d53615a242728ab7fd063e97a9783e9d49e97"
+      },
+      {
+        "path": "baseline/replay/C02-3.jpeg",
+        "size": 101309,
+        "sha256": "8f58d196be3ad9afef26208030137cd1603cc7ae9f2bebaefab61a9444d99429"
+      },
+      {
+        "path": "baseline/replay/C02-step0-before.json",
+        "size": 29301,
+        "sha256": "f627d9ed3f2be34328434161e28d23061e6ef284a71183fe88ce14991a12deea"
+      },
+      {
+        "path": "baseline/replay/C02-step1-before.json",
+        "size": 29301,
+        "sha256": "5cfe458d3f41c1df133c817904e542ad45fa604e122a19dba267b4126ed5d1a3"
+      },
+      {
+        "path": "baseline/replay/_current-dump.json",
+        "size": 29949,
+        "sha256": "0f4b48fe42032a5704a3e2dd3b8d53615a242728ab7fd063e97a9783e9d49e97"
+      },
+      {
+        "path": "baseline/replay-final.json",
+        "size": 448,
+        "sha256": "7bf8fd4e525bd727a62187b0ac05c91317b7cf2a58e788c9baa2ba9231ffc6d0"
+      },
+      {
+        "path": "baseline/replay-mechanical.json",
+        "size": 3358,
+        "sha256": "e288fb2e9ee20d1e21c2d1303ac0497d8ceee259979a5d270bdd68c382bd37d4"
+      },
+      {
+        "path": "baseline/replay.json",
+        "size": 3394,
+        "sha256": "bc95d79db428e3d8f38c45cda77bf143acf7af781f6e155c5a95014d0a737a86"
+      },
+      {
+        "path": "baseline/result-final.json",
+        "size": 586,
+        "sha256": "89f1a2f06c88c56261ca1b3407b907d98548ca94f3d79dd2530b04b172ffb5e5"
+      },
+      {
+        "path": "baseline/round.env",
+        "size": 88,
+        "sha256": "a9edcf8ba6c1e9632bb89b9a2a5c7a12966cdbf6678bf1426d779b79fdcf8935"
+      },
+      {
+        "path": "candidate/device-report.json",
+        "size": 1367,
+        "sha256": "ccd7a63f06437dfeb9e075734ee51cdf1e1b224bc82beaf59ecf629faa78c8ce"
+      },
+      {
+        "path": "candidate/build-checks.json",
+        "size": 5833,
+        "sha256": "1060b736432af98e5187aa71e6052616be6c38568a57423c4cfeec15b99e0a35"
+      },
+      {
+        "path": "candidate/compile.log",
+        "size": 3160,
+        "sha256": "0fff3ac1cea1c2e99559faa05f39e30f1934eb95d79da58c541d2d7cb54a99a1"
+      },
+      {
+        "path": "candidate/execution-order-audit.json",
+        "size": 407,
+        "sha256": "10dbe469e582aa2725c3356c1f08e6b2a19c678360f238a083280815a3472d9d"
+      },
+      {
+        "path": "candidate/hilog-scan.json",
+        "size": 30,
+        "sha256": "4d92a9f031894f9e8d8b954a99e50bf191ed15aefc6848bf1032b705b2bdbdb4"
+      },
+      {
+        "path": "candidate/install.json",
+        "size": 498,
+        "sha256": "c324591f13af87d151f50dbd93906c8569c170be1bf8cd1d35f5f296c0a5872c"
+      },
+      {
+        "path": "candidate/migration-trace.jsonl",
+        "size": 24522,
+        "sha256": "f5d0534e3cd2a7280f007c158d223a9291b8acdd0c148b4a8e41c7c51b8b74f4"
+      },
+      {
+        "path": "candidate/native-receipt.json",
+        "size": 413,
+        "sha256": "79910aefb139770981c68f9d1f438eb28dbe48f2fe382a96be833b9f4d9918db"
+      },
+      {
+        "path": "candidate/pages/P01.jpeg",
+        "size": 95098,
+        "sha256": "df6bb8270d1c8a90852955edce1fb5260ceddac28b02df5e5699cf4662d2e9fa"
+      },
+      {
+        "path": "candidate/pages/P01.json",
+        "size": 29301,
+        "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+      },
+      {
+        "path": "candidate/pages/pages.json",
+        "size": 353,
+        "sha256": "fca903a8670c702368620976679b6628e4b50d804c82c7a9457bb3dc36c9b1ab"
+      },
+      {
+        "path": "candidate/replay/C01-2-dump.json",
+        "size": 29949,
+        "sha256": "138cd1e3d4ebb53d9c3df57f9f713da4c8d1bc2d33c0fcfe95cc47edc2e8e6c8"
+      },
+      {
+        "path": "candidate/replay/C01-2.jpeg",
+        "size": 101797,
+        "sha256": "678a43c9627723aa6f1725423045e642a327a57f2664bd7d9a131ccdb3606ab8"
+      },
+      {
+        "path": "candidate/replay/C01-step0-before.json",
+        "size": 29301,
+        "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+      },
+      {
+        "path": "candidate/replay/C02-3-dump.json",
+        "size": 29949,
+        "sha256": "56ed8f77f3e4970b752bda21e4b6d50ffd5d0d9baeef10ebbc50e3b66a62abb8"
+      },
+      {
+        "path": "candidate/replay/C02-3.jpeg",
+        "size": 101457,
+        "sha256": "1a573cb257dfe242ae3e7c19d4d46468da23695f9067caf0df242be63158d7ab"
+      },
+      {
+        "path": "candidate/replay/C02-step0-before.json",
+        "size": 29301,
+        "sha256": "eb07fcaf71b0b2644d3304705f0fb948ff684b32ca4be36dd1df1372e1c26466"
+      },
+      {
+        "path": "candidate/replay/C02-step1-before.json",
+        "size": 29301,
+        "sha256": "44f6a5864b82a5260a2965080880a24bbb86f00ac983bb441665676d690336b5"
+      },
+      {
+        "path": "candidate/replay/_current-dump.json",
+        "size": 29949,
+        "sha256": "56ed8f77f3e4970b752bda21e4b6d50ffd5d0d9baeef10ebbc50e3b66a62abb8"
+      },
+      {
+        "path": "candidate/replay-final.json",
+        "size": 448,
+        "sha256": "7bf8fd4e525bd727a62187b0ac05c91317b7cf2a58e788c9baa2ba9231ffc6d0"
+      },
+      {
+        "path": "candidate/replay-mechanical.json",
+        "size": 3365,
+        "sha256": "b45617328147dda2f806d8ebc7e12782e00114bf84842136cec0105e2dbc6bdd"
+      },
+      {
+        "path": "candidate/replay.json",
+        "size": 3401,
+        "sha256": "0cd8c8c89efd10a1ee71d1e7034dba35203784108795ab789881831526f5d30d"
+      },
+      {
+        "path": "candidate/result-final.json",
+        "size": 586,
+        "sha256": "e97781e487c73c40696947a7eae604ae87170cd4de3d3318769aeb094b085637"
+      },
+      {
+        "path": "candidate/round.env",
+        "size": 88,
+        "sha256": "a9edcf8ba6c1e9632bb89b9a2a5c7a12966cdbf6678bf1426d779b79fdcf8935"
+      }
+    ],
+    "decided_at": "2026-11-25T11:48:49.429Z",
+    "local_validation": "not_applicable"
+  },
+  "verdict": "no-verified-improvement",
+  "selected": "/opt/skills-rsi-home/runs/7f12ad04-5fb1-4145-964e-f6ea2c6ff81a/frozen/skill",
+  "validationScope": "OpenCalc 数字格式化模块。DevEco 原生迁移，双端页面与两条交互回放。",
+  "finishedAt": "2026-11-25T11:48:49.457Z"
+}

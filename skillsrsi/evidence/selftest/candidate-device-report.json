@@ -1,0 +1,43 @@
+{
+  "packageSha256": "2ee355c0452a28f52299c458ff4cf471d2db0de188f8764c039ada56a03f0a9f",
+  "hapSha256": "43190a77edb9945e50a453bd299bf1cc3a9c9ef4c02732b3ffe796db649faec6",
+  "validity": "valid",
+  "metrics": {
+    "pages.pass_rate": 1.0,
+    "interactions.pass_rate": 1.0,
+    "duration_sec": 9.010232842000004
+  },
+  "gates": {
+    "package_identity": true,
+    "build_install": true,
+    "closeout": true,
+    "execution_order": false,
+    "critical_assertions": true,
+    "required_metrics": true
+  },
+  "evidence": [
+    "candidate/build-checks.json",
+    "candidate/compile.log",
+    "candidate/execution-order-audit.json",
+    "candidate/hilog-scan.json",
+    "candidate/install.json",
+    "candidate/migration-trace.jsonl",
+    "candidate/native-receipt.json",
+    "candidate/pages/P01.jpeg",
+    "candidate/pages/P01.json",
+    "candidate/pages/pages.json",
+    "candidate/replay/C01-2-dump.json",
+    "candidate/replay/C01-2.jpeg",
+    "candidate/replay/C01-step0-before.json",
+    "candidate/replay/C02-3-dump.json",
+    "candidate/replay/C02-3.jpeg",
+    "candidate/replay/C02-step0-before.json",
+    "candidate/replay/C02-step1-before.json",
+    "candidate/replay/_current-dump.json",
+    "candidate/replay-final.json",
+    "candidate/replay-mechanical.json",
+    "candidate/replay.json",
+    "candidate/result-final.json",
+    "candidate/round.env"
+  ]
+}

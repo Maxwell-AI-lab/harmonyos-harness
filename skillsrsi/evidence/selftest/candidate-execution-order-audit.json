@@ -1,0 +1,17 @@
+{
+  "schema": "skillopt-execution-order/1",
+  "status": "violation",
+  "reasons": [],
+  "violations": [
+    {
+      "path": "harmony/entry/src/main/ets/calculator/NumberFormatter.ets",
+      "at": 1795607283.2705743,
+      "event": "external snapshot",
+      "reason": "code before Spec"
+    }
+  ],
+  "changed_files": [
+    "harmony/entry/src/main/ets/calculator/NumberFormatter.ets"
+  ],
+  "handoffs": {}
+}

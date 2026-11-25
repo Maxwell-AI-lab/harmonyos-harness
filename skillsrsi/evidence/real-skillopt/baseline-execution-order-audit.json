@@ -1,0 +1,12 @@
+{
+  "schema": "skillopt-execution-order/1",
+  "status": "needs_review",
+  "reasons": [
+    "verified Spec/Plan handoffs unavailable"
+  ],
+  "violations": [],
+  "changed_files": [
+    "harmony/entry/src/main/ets/calculator/NumberFormatter.ets"
+  ],
+  "handoffs": {}
+}

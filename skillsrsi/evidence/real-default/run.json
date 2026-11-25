@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "skills-rsi.run/1",
+  "id": "707f915d-8ae5-478b-b78c-c350e901347f",
+  "title": "SkillsRSI 沙箱真跑 · OpenCalc 双端 · arkts-routed-bc",
+  "plan": {
+    "schemaVersion": "skills-rsi.plan/1",
+    "title": "SkillsRSI 沙箱真跑 · OpenCalc 双端 · arkts-routed-bc",
+    "harness": "deveco",
+    "skillPath": "",
+    "inputPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/input",
+    "devecoHome": "/opt/deveco-home",
+    "prompt": "This is the bounded OpenCalc formatter migration, not the entire application. Source root is android/ and target root is harmony/. Read android/NumberFormatter.kt. Port the behavior of NumberFormatter.format into one ArkTS exported top-level function formatOpenCalcNumber(text: string, decimalSeparatorSymbol: string, groupingSeparatorSymbol: string, indian: boolean): string. Preserve string precision, all operator characters, leading and fractional zeros, empty input, localized separators and the upstream distinction between international and Indian grouping. Read the existing caller harmony/entry/src/main/ets/pages/Index.ets only if needed. Write only harmony/entry/src/main/ets/calculator/NumberFormatter.ets. No imports or platform dependencies in the generated formatter. Use ArkTS types. End after writing the one file. The independent evaluator compiles and checks behavior.",
+    "outputs": [
+      "harmony/entry/src/main/ets/calculator/NumberFormatter.ets"
+    ],
+    "evaluator": {
+      "toolsPath": "/opt/skills-rsi-home/examples/opencalc-formatter-TuHUXw/tools",
+      "argv": [
+        "/opt/command-line-tools/tool/node/bin/node",
+        "{tools}/check.mjs",
+        "{workspace}"
+      ]
+    },
+    "model": "deepseek-v4.1-flash",
+    "baseUrl": "http://127.0.0.1:18080/v1",
+    "thinking": "disabled",
+    "timeoutSeconds": 600,
+    "maxTokens": 8192,
+    "validationScope": "OpenCalc 数字格式化模块。DevEco 原生迁移，双端页面与两条交互回放。",
+    "formal": true,
+    "optimizer": "arkts-routed-bc",
+    "evalPackage": {
+      "name": "OpenCalc",
+      "contentId": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e"
+    },
+    "optimizationScope": "skill",
+    "targetSkill": "hmbot-migrate",
+    "localValidation": false
+  },
+  "status": "completed",
+  "createdAt": "2026-11-25T11:49:35.370Z",
+  "stages": [
+    {
+      "name": "freeze",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:49:35.372Z",
+      "finishedAt": "2026-11-25T11:49:35.415Z"
+    },
+    {
+      "name": "formal-evaluation-package",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:49:35.441Z",
+      "finishedAt": "2026-11-25T11:49:36.076Z"
+    },
+    {
+      "name": "formal-device-preflight",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:49:36.444Z",
+      "finishedAt": "2026-11-25T11:49:36.791Z"
+    },
+    {
+      "name": "baseline-migration-and-evaluation",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:49:36.792Z",
+      "finishedAt": "2026-11-25T11:51:05.522Z"
+    },
+    {
+      "name": "diagnosis",
+      "status": "completed",
+      "startedAt": "2026-11-25T11:51:05.525Z",
+      "finishedAt": "2026-11-25T11:52:29.189Z"
+    }
+  ],
+  "modelRequests": 49,
+  "accepted": false,
+  "frozen": {
+    "hmbot": {
+      "files": {
+        "LICENSE": "bcfefa365d3bf557b35123ce65a9107527bd87f2d498ae1ff54dd0d1182a6c31",
+        "README.md": "dfd19567f529e7549b229ede48903665182fd481bedbcd08f337f5d599d8ba1e",
+        "agents/hmbot-reviewer.md": "ba6eb4cc41391d0aed61e8db1a1ca364d0a01cba9329c4f31552976f4eedaac4",
+        "agents/hmbot-worker.md": "1134448b0100eb183d4e339223831bcea96716b7eb548cdf66281c82c3ba4b17",
+        "agents/hmbot.md": "3a15303060805f18f34df4c2f2d876f97db9e534425b797d92028841916865aa",
+        "commands/hmbot.md": "4914861e92f38884b3ed7d57b9bc3a3678163b4c143779f3eb3489a5ed5075fd",
+        "dist/index.js": "23f514d907523a743d86bbc71768ff025f940035eff5da34781e8ce3c78379ab",
+        "engine/tui/hmbot-workflow-progress.tsx": "d7f000da94e929155d1df9e8e052fa3119f167a7c84a488d4f3ed221e766baa6",
+        "index.js": "45ace06821efa9c326b00db70989589c5a15bc3971f0f5c6f4a3553bdd0de1ea",
+        "install.mjs": "494052076fe4a5306d9976297453ff0807d5d80a4e9bd43c97d2dc7bd80e0af2",
+        "manifest.json": "ed6c463b826a2a8824b4bcba66b17f9e8330fc7a3d19dadd485e01943554ba47",
+        "package.json": "8107199b31397bd5535658b163d303a379fcf33b219a47d9283c1c37a78ea59a",
+        "skills/hmbot-dependency-strategy/FILES.md": "cd6af4f758e563c1e0e10df5c220946fb392575995bec7a2edec6b4f9ebb6f64",
+        "skills/hmbot-dependency-strategy/SKILL.md": "f9d4ac5ea55386712cd9039a34f69089b2cf886d3399f323232d478684844072",
+        "skills/hmbot-dependency-strategy/references/official-sdk-links.md": "b85a0f0acd7caaebbe693f1e82ad4c25cfbf62958b82832b6802fd7bfd048dad",
+        "skills/hmbot-dependency-strategy/references/semantic-probes.md": "0e80e0b9a793a4521a08a3a4b3d9a19eaef26a7686ca24ed1ab0c3d13beff0e1",
+        "skills/hmbot-mig-arch/FILES.md": "17a28468f2149599dc0749425c13358ea156c2d134275361477b3f681b994adc",
+        "skills/hmbot-mig-arch/SKILL.md": "822611c47d2c8019732accff2d139d18b07c16b98ca38a915a93db560b279c1e",
+        "skills/hmbot-mig-arch/agents/openai.yaml": "883cb47413b5f4e4244846f8e4c0a0e1ed8e862e052a4d3af90fe87442b63915",
+        "skills/hmbot-mig-arch/references/architecture-model.md": "8013a47ba6026458e7f73b789eaddb15942f36964e84e37dab99690cf5ced546",
+        "skills/hmbot-mig-arch/references/harmony-mapping.md": "b041e6fd8135012943ac099ca59440f24e969d3ebf06f291eebc3005a1bf0dc6",
+        "skills/hmbot-mig-arch/references/module-spec.md": "22ce918e0adc1c50443207a7510162c2891508217357331f2248859c5bf72926",
+        "skills/hmbot-mig-arch/references/tools-and-evidence.md": "f7b258ae1be7b7ef183919c80d1327a7bb01e1222063e721e5b7d701c779a4ba",
+        "skills/hmbot-migrate/FILES.md": "c5c08b3d8ba30f3ad186b862c6c95bf6f36f9e5c0a60a32751f237fe80a74f27",
+        "skills/hmbot-migrate/SKILL.md": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+        "skills/hmbot-migrate/references/android-ui-defaults.md": "e91c983e3dab31f7b1a21773e2e7829ed26475bb78b6c2b184b8738128231de7",
+        "skills/hmbot-migrate/references/assets-and-docs.md": "d8d8b345603514b2ba810fdbfc0b9b5d64594ef785819a67779564ef1f14ea61",
+        "skills/hmbot-migrate/references/modular-work.md": "be2b8c0168a9c1a90036c600ff8e86ea7687a752ec874afe3343a6f613934660",
+        "skills/hmbot-migrate/templates/hmbot_parallel_tasks.js": "93ef2ae5361bc469c00d9b640d6b55bb56eb50ac4507d46681ebc04a6c8d6175"
+      },
+      "digest": "4dd1d06aa0e5908660c981715c83b52715788a1f1ed29eb70f6c29b85da1cb5d"
+    },
+    "skill": {
+      "files": {
+        "FILES.md": "c5c08b3d8ba30f3ad186b862c6c95bf6f36f9e5c0a60a32751f237fe80a74f27",
+        "SKILL.md": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+        "references/android-ui-defaults.md": "e91c983e3dab31f7b1a21773e2e7829ed26475bb78b6c2b184b8738128231de7",
+        "references/assets-and-docs.md": "d8d8b345603514b2ba810fdbfc0b9b5d64594ef785819a67779564ef1f14ea61",
+        "references/modular-work.md": "be2b8c0168a9c1a90036c600ff8e86ea7687a752ec874afe3343a6f613934660",
+        "templates/hmbot_parallel_tasks.js": "93ef2ae5361bc469c00d9b640d6b55bb56eb50ac4507d46681ebc04a6c8d6175"
+      },
+      "digest": "09f0b83fa1b0416152faf04a09f2df2e7d49c10c6cb56bab6efd5a335e7ebaa5"
+    },
+    "input": {
+      "files": {
+        "android/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+        "android/NumberFormatter.kt": "affd4576cccde79821ba9d73c9fd9ca2aa6f12899a55747d36a8332c9420dfce",
+        "harmony/AppScope/app.json5": "85a9ca7b5e09d41c84da64b59c7a93c5f724de11e486a1580b3b4a7e9e32b5a3",
+        "harmony/AppScope/resources/base/element/string.json": "f852dc21b3987ea58e5d9afa211455f036b74d9b2d0f6318dd3f6e1a953ac21a",
+        "harmony/AppScope/resources/base/media/app_icon.svg": "c0cb5673dc0c2066d09dd673f1de250cbb7c7dfb1a0d7d4e201218843cdad337",
+        "harmony/build-profile.json5": "63dce6bd186bb4dfc005991ef2b516b2210615cff627b723fdfba4fd499faae6",
+        "harmony/code-linter.json5": "f557c3bcdb40c64c986bffed9628310cc7a79fb7d2642c1c8b8d265fd92e25ad",
+        "harmony/entry/build-profile.json5": "7727b3a9bf7e522930cb1ec259c0bd26c948d09d37d0d724aab23f5f499a4004",
+        "harmony/entry/hvigorfile.ts": "1ef08cf4d5a2995964b0213834dd91de3afb8845aae53178016e1c56df0844b6",
+        "harmony/entry/obfuscation-rules.txt": "42c563d696cdf0a0367c39f564e752d82ec15e394549f826848228680674a4ef",
+        "harmony/entry/oh-package.json5": "e43c301543587b2ce20c0b51363e9d4102aab37f19a69f670ef7aaced1a98ed7",
+        "harmony/entry/src/main/ets/entryability/EntryAbility.ets": "416248d2ddd8c4b173c086a5d64137359091ef91d83c9d5ec7726cca3694a9d9",
+        "harmony/entry/src/main/ets/pages/Index.ets": "93e316e1bdb886963bc4fef8d3b4d9b6693b7133681cd487752fa8734b2ebd72",
+        "harmony/entry/src/main/module.json5": "4cd21d92e758c77d3e43366c758d7e97193570343ad1f67c3f65bd49e3825803",
+        "harmony/entry/src/main/resources/base/element/color.json": "e1dea1114b9f447d52abb6ea3e4d0b441025ec5c09f1207dad3cdd16ac2b8d0c",
+        "harmony/entry/src/main/resources/base/profile/main_pages.json": "4f7fe5b56dce484ae25118a1c4e97e9d450c18301f851c88d4357b76ac6b9485",
+        "harmony/hvigor/hvigor-config.json5": "e9c6675d4c479e3ac3cd3d36060892e93d53acb2252e3936ce145024bcd04ac2",
+        "harmony/hvigorfile.ts": "b8882fb4b6da475eeeeb64875e8f80a1bdfe4ea4b9d943396e91be45478a4758",
+        "harmony/oh-package-lock.json5": "63261e4afee2280ca28b240d99956d666f0efc6be6b2cc76dd53470c10d3cf71",
+        "harmony/oh-package.json5": "d615485f0ded5442af6435ba1ac1ef43a57a79d9d6288538663ec5f9bac88fcb"
+      },
+      "digest": "d05c15f5d41ff7b92a52beaa61984a89a8d328707feaf1e21368acc6798d2b1b"
+    },
+    "evaluator": {
+      "files": {
+        "check.mjs": "d790c27187fd1de9648c03cfed8455898cc271a3d854121f4b56b0b5c47b6dd2",
+        "environment.json": "bebc9b9ed5a8c98799ff94e4ca89f97cc56420c217fc0dbb14a843f4ba2cbae5",
+        "formal.json": "9c9fbd807a5f68006e918dc7313abd23ec24c93ed9c18a045617dfc19cab9e8c"
+      },
+      "digest": "dd8706b05fd289f947e53f9b4f5bd248a4ed74ee1f8981c16987932865cd2670"
+    }
+  },
+  "planDigest": "af6ba7b68c7f297be3b3464684796602462c59d552251e5bc8b798845876c5e0",
+  "formal": {
+    "entry": "online",
+    "mutator": "arkts-routed-bc",
+    "optimizationScope": "skill",
+    "targetSkill": "hmbot-migrate",
+    "localValidation": false,
+    "optimizationModel": "deepseek-v4.1-flash",
+    "judge": {
+      "model": "deepseek-v4.1-flash",
+      "endpoint": "http://127.0.0.1:18080/v1",
+      "images": false
+    },
+    "calibrated": false,
+    "evaluation": {
+      "appName": "OpenCalc",
+      "schema": "skillopt-eval-package/2",
+      "contentId": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e",
+      "runner": {
+        "mode": "package",
+        "name": "a2h-eval-runner",
+        "version": "1.0.0",
+        "package_content_id": "98f37bb6f438b5952c26995d095d1e388a8f746aef94787a20bc648129e7f76e",
+        "entrypoints": {
+          "lint": "lint_journeys.py",
+          "replay": "replay.py",
+          "pages": "pages_evidence.py"
+        }
+      }
+    },
+    "acceptance": {
+      "primary": {
+        "metric": "interactions.pass_rate",
+        "min_gain": 0.01
+      },
+      "guards": [
+        "pages.pass_rate"
+      ],
+      "absolute_goals": {},
+      "allow_local_gain_for_c": false
+    },
+    "budget": {
+      "max_candidates": 1,
+      "max_active_hours": 1,
+      "max_pause_hours": 0,
+      "finalization_reserve_sec": 60,
+      "max_local_attempts_per_candidate": 3,
+      "max_invalid_retries_per_unit": 1
+    },
+    "routing": {
+      "items": [],
+      "analysis": {
+        "path": "v2/analysis/analysis.json",
+        "size": 2024,
+        "sha256": "fe3eca2800602fcf74ece711933b4216c338b0f444da1a82df31ba97c0f7431f"
+      },
+      "assetIdentity": {
+        "name": "skillopt-assets",
+        "business": "a2h",
+        "sha256": "dbc49d509fa2a6a6546035ceaa5fafa48f583dd37a7bb8771e1050affd6173ce"
+      },
+      "targets": [
+        "hmbot-migrate"
+      ],
+      "baselineSkills": "/opt/skills-rsi-home/runs/707f915d-8ae5-478b-b78c-c350e901347f/state/kernel/skills"
+    }
+  },
+  "native": {
+    "baseline": {
+      "harness": "deveco",
+      "hmbotVersion": "0.1.6",
+      "skillSha256": "d96c450ed79336de41cf7c09fb0d8564c4e461c12d02d4d4eea22309d240b03a",
+      "skillBundleSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+      "migrationDuration": 38.44587089000001,
+      "loaded": true,
+      "finished": true,
+      "unchanged": true,
+      "exitCode": 0,
+      "requests": 15,
+      "requestLimit": null,
+      "limitReached": false
+    }
+  },
+  "judgeModelIdentity": "deepseek-v4-1-flash-261017",
+  "baseline": {
+    "schemaVersion": "skills-rsi.checks/1",
+    "checks": [
+      {
+        "id": "P01",
+        "pass": true,
+        "evidence": "页面组：foreground_ok=true、reached=true，页面标志 ['OpenCalc 格式化试用','格式化'] 与安卓基线 P01.xml 的标题/输入框/分组/格式化按钮对应；dump 文案含 'OpenCalc 格式化试用','1234567.890','国际数位分组','格式化'，主要内容块齐全；hilog crash=0。与安卓基线一致（仅视觉风格差异不计）。",
+        "status": "PASS"
+      },
+      {
+        "id": "C01",
+        "pass": true,
+        "evidence": "replay C01：tap '格式化' 命中可点击 Button（matched_bounds=[488,766][768,906]，clickable=true，point_source=control，非祖先代理），sleep 1 后 dump 文案含 '1,234,567.890'，与冻结 expected 及安卓 C01.xml 一致；无崩溃。",
+        "status": "PASS"
+      },
+      {
+        "id": "C02",
+        "pass": true,
+        "evidence": "replay C02：先 tap '国际数位分组'（命中可点击 Button，bounds=[404,570][852,710]，clickable=true），再 tap '格式化'（命中 Button，bounds=[488,766][768,906]），sleep 1 后 dump 文案含 '12,34,567.890'，与冻结 expected 及安卓 C02.xml 一致；无崩溃。",
+        "status": "PASS"
+      }
+    ],
+    "scope": "OpenCalc NumberFormatter slice, runtime logic and fresh HarmonyOS HAP build",
+    "score": 1,
+    "artifactsDigest": "be3654eed35d6523c0d17438d059b890cea533fe986a4aae9f4c140a191d9ca1",
+    "migrationDuration": 38.44587089000001,
+    "formal": {
+      "packageSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+      "hapSha256": "d849e6808026fd3a73e1f411aa22298c846b03ef17aaff6b66ce2c6e855f0fe9",
+      "validity": "valid",
+      "metrics": {
+        "pages.pass_rate": 1,
+        "interactions.pass_rate": 1,
+        "duration_sec": 38.44587089000001
+      },
+      "gates": {
+        "package_identity": true,
+        "build_install": true,
+        "closeout": true,
+        "execution_order": false,
+        "critical_assertions": true,
+        "required_metrics": true
+      },
+      "evidence": [
+        "baseline/build-checks.json",
+        "baseline/compile.log",
+        "baseline/execution-order-audit.json",
+        "baseline/hilog-scan.json",
+        "baseline/install.json",
+        "baseline/migration-trace.jsonl",
+        "baseline/native-receipt.json",
+        "baseline/pages/P01.jpeg",
+        "baseline/pages/P01.json",
+        "baseline/pages/pages.json",
+        "baseline/replay/C01-2-dump.json",
+        "baseline/replay/C01-2.jpeg",
+        "baseline/replay/C01-step0-before.json",
+        "baseline/replay/C02-3-dump.json",
+        "baseline/replay/C02-3.jpeg",
+        "baseline/replay/C02-step0-before.json",
+        "baseline/replay/C02-step1-before.json",
+        "baseline/replay/_current-dump.json",
+        "baseline/replay-final.json",
+        "baseline/replay-mechanical.json",
+        "baseline/replay.json",
+        "baseline/result-final.json",
+        "baseline/round.env"
+      ]
+    }
+  },
+  "optimizationModelIdentity": "deepseek-v4-1-flash-261017",
+  "diagnosis": [],
+  "verdict": "no-actionable-work",
+  "selected": "/opt/skills-rsi-home/runs/707f915d-8ae5-478b-b78c-c350e901347f/frozen/skill",
+  "validationScope": "OpenCalc 数字格式化模块。DevEco 原生迁移，双端页面与两条交互回放。",
+  "finishedAt": "2026-11-25T11:52:29.210Z"
+}

@@ -1,0 +1,35 @@
+{
+  "value": {
+    "assertions": [
+      {
+        "id": "P01",
+        "status": "PASS",
+        "observed": "页面组：foreground_ok=true、reached=true，页面标志 ['OpenCalc 格式化试用','格式化'] 与安卓基线 P01.xml 的标题/输入框/分组/格式化按钮对应；dump 文案含 'OpenCalc 格式化试用','1234567.890','国际数位分组','格式化'，主要内容块齐全；hilog crash=0。与安卓基线一致（仅视觉风格差异不计）。"
+      },
+      {
+        "id": "C01",
+        "status": "PASS",
+        "observed": "replay C01：tap '格式化' 命中可点击 Button（matched_bounds=[488,766][768,906]，clickable=true，point_source=control，非祖先代理），sleep 1 后 dump 文案含 '1,234,567.890'，与冻结 expected 及安卓 C01.xml 一致；无崩溃。"
+      },
+      {
+        "id": "C02",
+        "status": "PASS",
+        "observed": "replay C02：先 tap '国际数位分组'（命中可点击 Button，bounds=[404,570][852,710]，clickable=true），再 tap '格式化'（命中 Button，bounds=[488,766][768,906]），sleep 1 后 dump 文案含 '12,34,567.890'，与冻结 expected 及安卓 C02.xml 一致；无崩溃。"
+      }
+    ],
+    "notes": "3 条冻结断言全部 PASS：页面组 1/1，交互组 2/2。P01 页面标志与主要内容块齐全、无崩溃；C01/C02 点击均命中对应可点击控件（非误点/祖先代理），等待后证据到达目标文案，与安卓基线逐字一致。未发现定位缺口或产品缺陷；无 BLOCKED/NOT_RUN。视觉风格差异未单独记录（本轮无可见差异证据）。"
+  },
+  "model": "deepseek-v4-1-flash-261017",
+  "usage": {
+    "completion_tokens": 399,
+    "prompt_tokens": 7099,
+    "total_tokens": 7498,
+    "prompt_tokens_details": {
+      "cached_tokens": 4096
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "promptDigest": "bec72710037676c2f351eb39be66da221d34771b83cd9ae6271c0ab12e02e650"
+}

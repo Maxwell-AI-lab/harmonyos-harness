@@ -1,0 +1,24 @@
+{
+  "round": 1,
+  "notes": "[桩] 状态照抄机械回放与页面取证结果,只用于验证流水线,不是语义裁判。",
+  "calibrations": [],
+  "pages": {
+    "pass": 1,
+    "total": 1,
+    "detail": [
+      {
+        "id": "P01",
+        "status": "PASS",
+        "observed": "[桩·页面取证] foreground_ok=True reached=True texts=['OpenCalc 格式化试用', '1234567.890', '国际数位分组', '格式化', '07', '47']"
+      }
+    ]
+  },
+  "interactions": {
+    "pass": 2,
+    "fail": 0,
+    "blocked": 0,
+    "not_run": 0,
+    "total": 2
+  },
+  "meets_target": true
+}

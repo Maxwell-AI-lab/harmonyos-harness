@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkillsRSI 沙箱镜像测试报告 · harness-dev:2.2-skillsrsi</title>
+<style>
+:root{--bg:#f5f6f8;--fg:#1a2332;--card:#fff;--border:#e2e8f0;--muted:#64748b;
+--blue:#2563eb;--green:#059669;--red:#dc2626;--orange:#d97706;--purple:#7c3aed;--cyan:#0891b2}
+@media(prefers-color-scheme:dark){:root{--bg:#0f141b;--fg:#e6eaf0;--card:#1a2029;--border:#2a3341;--muted:#93a1b3}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
+font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.65}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 32px 70px}
+h1{font-size:27px;margin:0 0 8px}h2{font-size:21px;margin:38px 0 14px;padding-top:16px;border-top:2px solid var(--border)}
+h3{font-size:17px;margin:22px 0 10px}h4{font-size:14px;margin:16px 0 6px}
+.sub{color:var(--muted);margin-bottom:24px;font-size:13px}
+table{border-collapse:collapse;width:100%;margin:12px 0 18px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:13px}
+th{text-align:left;padding:9px 12px;background:color-mix(in srgb,var(--blue) 8%,var(--card));border-bottom:1px solid var(--border);font-weight:600;font-size:12px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}tr:last-child td{border-bottom:none}
+.callout{border-left:4px solid var(--blue);background:color-mix(in srgb,var(--blue) 6%,var(--card));border-radius:8px;padding:14px 18px;margin:16px 0}
+.callout.warn{border-color:var(--orange);background:color-mix(in srgb,var(--orange) 6%,var(--card))}
+.callout.err{border-color:var(--red);background:color-mix(in srgb,var(--red) 6%,var(--card))}
+.callout.ok{border-color:var(--green);background:color-mix(in srgb,var(--green) 6%,var(--card))}
+.stat-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.stat{flex:1;min-width:130px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat .n{font-size:25px;font-weight:700;line-height:1.2}.stat .l{color:var(--muted);font-size:11px;margin-top:4px}
+.g{border-top:4px solid var(--green)}.b{border-top:4px solid var(--blue)}.o{border-top:4px solid var(--orange)}
+code{background:color-mix(in srgb,var(--blue) 8%,transparent);color:var(--blue);padding:1px 6px;border-radius:4px;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+.tag{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:600;color:#fff}
+.tok{background:var(--green)}.twarn{background:var(--orange)}.terr{background:var(--red)}.tskip{background:var(--muted)}
+.foot{color:var(--muted);font-size:12px;margin-top:48px;border-top:1px solid var(--border);padding-top:14px}
+.shots{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.shots figure{margin:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px}
+.shots img{display:block;height:420px;border-radius:6px}
+.shots figcaption{color:var(--muted);font-size:12px;margin-top:8px}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>SkillsRSI 沙箱镜像测试报告</h1>
+<div class="sub">基于 harness-dev:2.2 · SkillsRSI 0.4.1 · 镜像 harness-dev:2.2-skillsrsi · 2026-11-25 · 173 服务器</div>
+
+<h2>一、结论</h2>
+
+<div class="callout ok">
+<b>SkillsRSI 0.4.1 的完整流程可以在 Linux 容器里无人值守地跑通，结果与在 Mac 上跑的一致。</b>在全新的容器里不做任何手动步骤：假模型自检走完全部八个阶段；用真实模型跑的两轮都正常完成，结论都是“基线满分，没有可优化的地方”。镜像在 2.2 之上叠了一层，2.2 原有的用法不受影响。
+</div>
+
+<div class="stat-row">
+<div class="stat g"><div class="n">8/8</div><div class="l">自检通过的阶段数</div></div>
+<div class="stat g"><div class="n">2 轮</div><div class="l">真实运行，均正常完成</div></div>
+<div class="stat b"><div class="n">约 3 分钟</div><div class="l">一轮真实运行（含模拟器启动）</div></div>
+<div class="stat b"><div class="n">49 次</div><div class="l">一轮真实运行的模型请求</div></div>
+</div>
+
+<p>这个镜像“能不能用”取决于三件事，只看版本号是发现不了的：</p>
+
+<table>
+<tr><th style="width:5%">#</th><th style="width:26%">事实</th><th>说明</th></tr>
+<tr><td>1</td><td><b>只需要鸿蒙模拟器</b></td><td>0.4.1 自带评测包，里面有预先录好的安卓参考，流程里不再需要安卓设备。容器里只启动鸿蒙模拟器。</td></tr>
+<tr><td>2</td><td><b>评测包必须先被确认</b></td><td>0.4.1 的硬性要求：评测包没有被确认过，第一个阶段就会失败。它的命令行没有确认命令，只有控制台页面上有。镜像构建时代为确认了内置的 OpenCalc 评测包，确认人是 <code>skillsrsi-sandbox-image</code>。</td></tr>
+<tr><td>3</td><td><b>模型要支持三种调用方式</b></td><td>流式的工具调用（迁移，由 DevEco Code 发起）、强制的工具调用（诊断，最多 48 轮）、JSON 输出（裁判打分、改写技能）。缺任何一种，这一轮都会失败。</td></tr>
+</table>
+
+<h2>二、验证了什么</h2>
+
+<table>
+<tr><th style="width:24%">验证项</th><th style="width:36%">怎么验的</th><th>结果</th></tr>
+<tr><td>能从仓库代码构建</td><td>在 173 上用仓库里的 <code>skillsrsi/</code> 目录构建</td><td><span class="tag tok">通过</span> 约 25 秒</td></tr>
+<tr><td>镜像里的脚本和仓库一致</td><td>逐个比对 7 个文件的 SHA-256</td><td><span class="tag tok">通过</span> 见 <code>skillsrsi/build/BUILD-INFO.txt</code></td></tr>
+<tr><td>自检（假模型）</td><td>全新容器里跑 <code>skillsrsi-selftest.sh</code></td><td><span class="tag tok">通过</span> 8 个阶段，运行 113 秒</td></tr>
+<tr><td>真实运行（默认优化器）</td><td><code>deepseek-v4.1-flash</code>，优化器 <code>arkts-routed-bc</code></td><td><span class="tag tok">完成</span> 无可执行工作项，运行 178 秒</td></tr>
+<tr><td>真实运行（SkillOpt）</td><td><code>deepseek-v4.1-flash</code>，优化器 <code>skillopt</code></td><td><span class="tag tok">完成</span> 无可执行工作项，运行 155 秒</td></tr>
+<tr><td>设备上真实取证</td><td>看截图和机械回放记录</td><td><span class="tag tok">通过</span> 见 4.3 节</td></tr>
+<tr><td>与 Mac 上的结果对照</td><td>见第五节</td><td><span class="tag tok">一致</span></td></tr>
+<tr><td>导出包</td><td>校验和、解压完整性、重新导入</td><td><span class="tag tok">通过</span> 8.13G，SHA-256 以 <code>8a0d32a7</code> 开头；解压完整性检查通过，在 173 上重新导入成功，镜像 ID 不变</td></tr>
+<tr><td>换一台机器导入</td><td>—</td><td><span class="tag tskip">未验证</span></td></tr>
+<tr><td>多个容器同时跑</td><td>—</td><td><span class="tag tskip">未验证</span></td></tr>
+<tr><td>改写技能 → 候选复验（真实模型）</td><td>—</td><td><span class="tag tskip">未走到</span> 诊断没有发现问题，流程在诊断后正常收尾</td></tr>
+</table>
+
+<h2>三、镜像里有什么</h2>
+
+<table>
+<tr><th style="width:22%">项目</th><th>内容</th></tr>
+<tr><td>基础镜像</td><td><code>harness-dev:2.2</code>（ID 以 <code>01ef464e</code> 开头），本身没有改动</td></tr>
+<tr><td>SkillsRSI</td><td>0.4.1 官方发布包，SHA-256 以 <code>9aedc590</code> 开头，装在 <code>/opt/skills-rsi</code></td></tr>
+<tr><td>HMBot</td><td>0.1.6，npm 官方包，构建时下载并校验</td></tr>
+<tr><td>示例任务</td><td>OpenCalc 数字格式化（源码固定到一次提交），配方在 <code>/opt/skills-rsi-home/examples/opencalc</code></td></tr>
+<tr><td>评测包</td><td>内置的 OpenCalc 评测包，已确认，确认人 <code>skillsrsi-sandbox-image</code></td></tr>
+<tr><td>编译缓存</td><td>hvigor 与 npm 的缓存已预热</td></tr>
+<tr><td>两处适配</td><td>用 DevEco 自带的 Node 24.14.1（系统自带的是 24.0.0，版本不够）；补一个指向系统 JDK 21 的软链接</td></tr>
+<tr><td>入口脚本</td><td><code>/opt/scripts/skillsrsi</code>（命令行入口）、<code>skillsrsi-run.sh</code>（跑一轮）、<code>skillsrsi-selftest.sh</code>（自检）</td></tr>
+<tr><td>自检工具</td><td>按剧本回答的假模型，和一份能通过示例检查的迁移产物</td></tr>
+<tr><td>不包含</td><td>任何模型凭据；<code>rsi.agents</code> 标签（rsi 的调度器不会把普通任务派到这个镜像上）</td></tr>
+</table>
+
+<h2>四、实测详情</h2>
+
+<p>以下数据都来自最终镜像（ID 以 <code>42ae0b9c</code> 开头）上的三次运行，原件在 <code>skillsrsi/evidence/</code>。</p>
+
+<h3>4.1 自检（假模型）</h3>
+
+<table>
+<tr><th style="width:40%">阶段</th><th style="width:18%">用时</th><th>结果</th></tr>
+<tr><td>冻结材料</td><td>0.1 秒</td><td><span class="tag tok">完成</span></td></tr>
+<tr><td>冻结评测包</td><td>0.5 秒</td><td><span class="tag tok">完成</span></td></tr>
+<tr><td>设备预检</td><td>0.2 秒</td><td><span class="tag tok">完成</span></td></tr>
+<tr><td>基线迁移和评测</td><td>53.0 秒</td><td><span class="tag tok">完成</span> 客观检查 15/15，设备上 3 项全过</td></tr>
+<tr><td>诊断</td><td>0.5 秒</td><td><span class="tag tok">完成</span></td></tr>
+<tr><td>改写技能</td><td>0.4 秒</td><td><span class="tag tok">完成</span> 生成了候选</td></tr>
+<tr><td>候选迁移和评测</td><td>55.2 秒</td><td><span class="tag tok">完成</span> 客观检查 15/15，设备上 3 项全过</td></tr>
+<tr><td>选择版本</td><td>0.2 秒</td><td><span class="tag tok">完成</span> 两边满分，保留基线</td></tr>
+</table>
+
+<p>自检里除了模型，其余都是真的：两轮迁移都由 DevEco Code 1.17.9 在容器里执行，技能加载成功、正常结束、技能文件未被改动、退出码为 0；鸿蒙模拟器上实际点了按钮、读到了结果。模拟器启动另需约 40 到 60 秒。假模型跳过了“先写规格说明”这一步，所以执行顺序审计判为“违规”。</p>
+
+<h3>4.2 真实运行</h3>
+
+<table>
+<tr><th style="width:34%">项目</th><th style="width:33%">默认优化器 <code>arkts-routed-bc</code></th><th>SkillOpt</th></tr>
+<tr><td>运行用时（不含模拟器启动）</td><td>178 秒</td><td>155 秒</td></tr>
+<tr><td>模型请求次数</td><td>49</td><td>49</td></tr>
+<tr><td>基线迁移和评测</td><td>88.7 秒</td><td>81.1 秒</td></tr>
+<tr><td>迁移本身（DevEco Code 执行）</td><td>38.4 秒，15 次模型请求，13 次工具调用</td><td>31.9 秒，10 次模型请求，11 次工具调用</td></tr>
+<tr><td>客观检查</td><td><span class="tag tok">15/15</span></td><td><span class="tag tok">15/15</span></td></tr>
+<tr><td>设备评测</td><td>页面 1/1，交互 2/2</td><td>页面 1/1，交互 2/2</td></tr>
+<tr><td>裁判打分</td><td><span class="tag tok">3 项通过</span> 输入 7,099 tokens</td><td><span class="tag tok">3 项通过</span> 输入 7,099 tokens</td></tr>
+<tr><td>诊断</td><td>83.7 秒，取证 48 次，结论：无需修改</td><td>66.1 秒，取证 48 次，结论：无需修改</td></tr>
+<tr><td>执行顺序审计</td><td><span class="tag terr">违规</span></td><td><span class="tag twarn">需要人工复核</span></td></tr>
+<tr><td>结论</td><td>无可执行工作项</td><td>无可执行工作项</td></tr>
+<tr><td>走到的阶段</td><td>5 个（诊断后正常收尾）</td><td>5 个（诊断后正常收尾）</td></tr>
+</table>
+
+<p>模型请求的 49 次里，裁判 1 次，诊断 48 次。两种优化器只在“改写技能”这一步不同，而诊断没有发现问题，所以两轮的结论完全一样。加载的技能文件指纹（以 <code>d96c450e</code> 开头）与在 Mac 上、在原作者的演示里看到的一致。</p>
+
+<h3>4.3 设备上的实际画面</h3>
+
+<p>下面三张是 SkillOpt 那一轮里，容器内的鸿蒙模拟器被实际操作时截下来的：先确认页面到达，再点“格式化”，然后切换分组后再点一次“格式化”。</p>
+
+<div class="shots">
+<figure><img src="../skillsrsi/evidence/real-skillopt/baseline-P01.jpeg" alt="页面取证截图"><figcaption>页面取证：标题、输入框、分组按钮和“格式化”按钮都在</figcaption></figure>
+<figure><img src="../skillsrsi/evidence/real-skillopt/baseline-C01-2.jpeg" alt="点击格式化后的截图"><figcaption>点“格式化”后：显示 <code>1,234,567.890</code></figcaption></figure>
+<figure><img src="../skillsrsi/evidence/real-skillopt/baseline-C02-3.jpeg" alt="切换分组并格式化后的截图"><figcaption>切换到印度分组再格式化：显示 <code>12,34,567.890</code></figcaption></figure>
+</div>
+
+<h2>五、和 Mac 上的对照</h2>
+
+<table>
+<tr><th style="width:24%">项目</th><th style="width:38%">Mac</th><th>173 服务器容器</th></tr>
+<tr><td>系统</td><td>macOS（Apple 芯片）</td><td>Linux（x86_64 容器）</td></tr>
+<tr><td>DevEco Code</td><td>0.2.5，官方 macOS 包</td><td>1.17.9，自行构建的 Linux 版</td></tr>
+<tr><td>SkillsRSI</td><td>0.3.1（真实运行）；0.4.1（假模型自检）</td><td>0.4.1</td></tr>
+<tr><td>模型</td><td><code>glm-5.4</code></td><td><code>deepseek-v4.1-flash</code></td></tr>
+<tr><td>优化器</td><td>两种各跑一轮</td><td>两种各跑一轮</td></tr>
+<tr><td>基线</td><td>客观检查 15/15，设备上 3 项全过</td><td>客观检查 15/15，设备上 3 项全过</td></tr>
+<tr><td>结论</td><td>无可执行工作项</td><td>无可执行工作项</td></tr>
+<tr><td>需要的设备</td><td>0.3.1 需要鸿蒙和安卓两台模拟器</td><td>只需要鸿蒙模拟器</td></tr>
+</table>
+
+<h2>六、已知问题与限制</h2>
+
+<table>
+<tr><th style="width:26%">现象</th><th style="width:32%">影响</th><th>处理</th></tr>
+<tr><td>示例任务对强模型来说太简单</td><td>真实运行都停在“诊断”，<b>“改写技能 → 候选复验”这条链路还没有被真实模型走过</b></td><td>想验证优化有没有效果，需要一个基线会出错的任务，并为此另外制作评测包</td></tr>
+<tr><td>默认是“影子评分”</td><td>裁判没有经过校准，不会出现“已验证改善”</td><td>需要正式结论时先做裁判校准（本镜像没有做）</td></tr>
+<tr><td>诊断阶段模型请求多</td><td>一轮约 49 次模型请求，诊断占 48 次，耗时约 1 到 1.5 分钟</td><td>排任务时按这个量估计额度和时间</td></tr>
+<tr><td>执行顺序审计的结果不稳定</td><td>三次运行里出现过“违规”和“需要人工复核”两种结果，取决于模型先写规格还是先写代码</td><td>影子评分下不阻断流程；要用于正式准出，需要先搞清它的判定规则</td></tr>
+<tr><td>评测包的“确认人”是构建时代填的</td><td>这一步本是给人把关用的</td><td>运行时加环境变量 <code>SKILLS_RSI_REVIEWER</code> 换成自己的名字</td></tr>
+<tr><td>第一次编译要联网</td><td>编译工具第一次运行要下载 pnpm，网络不通时会卡满 4 分钟后失败</td><td>镜像里已经预热；自己重建时，构建机要能访问 npm 源</td></tr>
+<tr><td>系统自带的 Node 版本不够</td><td>直接用 <code>node</code> 调用 SkillsRSI 会因为版本太旧而失败</td><td>用镜像自带的入口 <code>/opt/scripts/skillsrsi</code>，它用的是 DevEco 自带的 Node 24.14.1</td></tr>
+<tr><td>SkillsRSI 的发布包需要登录才能下载</td><td>公开仓库里没有这个包</td><td>向发布方索取，构建时会核对 SHA-256</td></tr>
+<tr><td>一轮的完整输出约 200M</td><td>几乎全是工作副本和编译中间产物</td><td>脚本只拷出约 5M 的证据；需要完整目录时，从容器的 <code>/opt/skills-rsi-home/runs</code> 取</td></tr>
+</table>
+
+<h2>七、怎么复现</h2>
+
+<ul>
+<li>不花模型额度的自检：<code>docker run --rm --device /dev/kvm --cpus 8 --memory 16g -v 输出目录:/work/skillsrsi-selftest-out harness-dev:2.2-skillsrsi /opt/scripts/skillsrsi-selftest.sh</code></li>
+<li>用真实模型跑一轮：命令同上，把输出目录换成 <code>/work/skillsrsi-out</code>、脚本换成 <code>/opt/scripts/skillsrsi-run.sh</code>，并通过环境变量 <code>SKILLS_RSI_API_KEY</code>、<code>SKILLS_RSI_BASE_URL</code>、<code>SKILLS_RSI_MODEL</code> 传入模型凭据、接口地址和模型名。</li>
+<li>详细的参数说明、结果怎么读、常见问题，见 <a href="USAGE-harness-dev-2.2-skillsrsi.md">使用指南</a>；镜像怎么做、为什么这么做，见 <a href="../skillsrsi/README.md">skillsrsi/README.md</a>。</li>
+</ul>
+
+<h2>八、证据清单</h2>
+
+<table>
+<tr><th style="width:40%">路径（<code>skillsrsi/evidence/</code> 下）</th><th>内容</th></tr>
+<tr><td><code>selftest/</code></td><td>自检这一轮：容器输出、<code>run.json</code>、两轮迁移的回执与设备报告、客观检查结果、执行顺序审计、三张截图</td></tr>
+<tr><td><code>real-default/</code></td><td>默认优化器那一轮：配方、容器输出、<code>run.json</code>、裁判原话、诊断结论、基线的回执与设备报告、三张截图</td></tr>
+<tr><td><code>real-skillopt/</code></td><td>SkillOpt 那一轮，内容同上</td></tr>
+<tr><td><code>pipeline.log</code></td><td>三次运行在一个流水线里依次执行时各步的结束时间和退出码</td></tr>
+<tr><td><code>../build/BUILD-INFO.txt</code></td><td>最终镜像里的构建信息：各组件版本、发布包与脚本的指纹</td></tr>
+</table>
+
+<div class="foot">
+SkillsRSI 0.4.1 官方发布包 · SHA-256 以 9aedc590 开头 · HMBot 0.1.6<br>
+基础镜像 harness-dev:2.2（ID 以 01ef464e 开头）· 镜像 harness-dev:2.2-skillsrsi（ID 以 42ae0b9c 开头，22.4GB）<br>
+模型 deepseek-v4.1-flash（经 OpenAI 兼容的网关）· 2026-11-25
+</div>
+
+</div></body>
+</html>

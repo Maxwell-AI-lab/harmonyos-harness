@@ -1,0 +1,43 @@
+{
+  "packageSha256": "8afcbccae51c8d2b46355e2a3632e6f49759de618378c37bbcd3092ca9c16bfc",
+  "hapSha256": "ee93a35dd7cdbf4227a6e4a7852c173bcde4b4153b04b45db941a1dfb08bb81e",
+  "validity": "valid",
+  "metrics": {
+    "pages.pass_rate": 1.0,
+    "interactions.pass_rate": 1.0,
+    "duration_sec": 9.760349791000001
+  },
+  "gates": {
+    "package_identity": true,
+    "build_install": true,
+    "closeout": true,
+    "execution_order": false,
+    "critical_assertions": true,
+    "required_metrics": true
+  },
+  "evidence": [
+    "baseline/build-checks.json",
+    "baseline/compile.log",
+    "baseline/execution-order-audit.json",
+    "baseline/hilog-scan.json",
+    "baseline/install.json",
+    "baseline/migration-trace.jsonl",
+    "baseline/native-receipt.json",
+    "baseline/pages/P01.jpeg",
+    "baseline/pages/P01.json",
+    "baseline/pages/pages.json",
+    "baseline/replay/C01-2-dump.json",
+    "baseline/replay/C01-2.jpeg",
+    "baseline/replay/C01-step0-before.json",
+    "baseline/replay/C02-3-dump.json",
+    "baseline/replay/C02-3.jpeg",
+    "baseline/replay/C02-step0-before.json",
+    "baseline/replay/C02-step1-before.json",
+    "baseline/replay/_current-dump.json",
+    "baseline/replay-final.json",
+    "baseline/replay-mechanical.json",
+    "baseline/replay.json",
+    "baseline/result-final.json",
+    "baseline/round.env"
+  ]
+}

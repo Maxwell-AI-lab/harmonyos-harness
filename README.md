@@ -1,4 +1,4 @@
-# Harness 一体化开发镜像(harness-dev:2.1 / 2.2)
+# Harness 一体化开发镜像(harness-dev:2.1 / 2.2 / 2.2-skillsrsi)
 
 一个镜像 = 开发构建(安卓+鸿蒙)+ 模拟器运行(安卓+鸿蒙)+ AI 编程工具。
 
@@ -6,18 +6,21 @@
 |---|---|---|
 | `harness-dev:2.1` | 基础镜像:双端工具链 + 双端模拟器 + devecocli / Claude Code | 本页 |
 | `harness-dev:2.2` | 2.1 + DevEco Code 1.17.9(Linux 版,从源码构建)+ 预置模拟器实例 + Lint 默认生效 | **[使用指南](docs/USAGE-harness-dev-2.2.md)**、[deveco-code/README.md](deveco-code/README.md)、[测试报告](docs/DEVECO-CODE-LINUX-TEST-REPORT.md) |
+| `harness-dev:2.2-skillsrsi` | 2.2 + SkillsRSI 0.4.1 运行环境(“让模型自己改进迁移技能”的沙箱) | **[使用指南](docs/USAGE-harness-dev-2.2-skillsrsi.md)**、[skillsrsi/README.md](skillsrsi/README.md)、[测试报告](docs/SKILLSRSI-IMAGE-TEST-REPORT.md) |
 
 **验证服务器**:119.3.230.173(hmbot1119 · 88核 / 376G / KVM)
 
 **镜像在哪、怎么拿**:
 
-- 两个版本的镜像都在 173 的 Docker 里。能登录这台机器的人不用传任何东西,直接 `docker run`。
+- 三个版本的镜像都在 173 的 Docker 里。能登录这台机器的人不用传任何东西,直接 `docker run`。
 - 别的机器要用,从 173 拷导出包,再 `docker load -i` 导入:
+  - `scp root@119.3.230.173:/root/harness-release/harness-dev-2.2-skillsrsi.tar.gz .`(8.1G)
   - `scp root@119.3.230.173:/root/harness-release/harness-dev-2.2.tar.gz .`(8.1G)
   - `scp root@119.3.230.173:/root/harness-release/harness-dev-2.1.tar.gz .`(7.5G)
 - **第一次用 2.2,请看[使用指南](docs/USAGE-harness-dev-2.2.md)**:机器要求、拿到镜像、起容器、配模型、开始干活、常见问题,一步一步都写了。
+- **想在容器里跑 SkillsRSI,请看[2.2-skillsrsi 使用指南](docs/USAGE-harness-dev-2.2-skillsrsi.md)**:先跑一遍不花模型额度的自检,再用真实模型跑一轮。
 
-下文“镜像分层”到“验证状态”两部分对两个版本都适用。
+下文“镜像分层”到“验证状态”两部分对三个版本都适用。
 
 ## 镜像分层
 
@@ -92,6 +95,35 @@ deveco run --agent build --auto "构建这个工程并安装到模拟器上启�
 
 另外,2.2 设置了 `ENTRYPOINT`(先起虚拟显示器再执行命令):`docker run -it 镜像` 直接进 bash;`docker run 镜像 <命令>` 照常执行;想执行一串命令要写成 `docker run 镜像 bash -c "…"`。可以用 `docker run --entrypoint bash ...` 绕过入口,但那样不会自动起虚拟显示器,模拟器就启动不了。
 
+## harness-dev:2.2-skillsrsi — SkillsRSI 技能自优化沙箱
+
+SkillsRSI 是一个“让模型自己改进迁移技能”的本地闭环工具:用一个小任务让 DevEco Code 照着技能手册迁移一遍并评测,再让模型诊断手册哪里有问题、改写、复验。`harness-dev:2.2-skillsrsi` 在 2.2 之上叠了一层,把 SkillsRSI 0.4.1 和它依赖的东西装进镜像,让这套流程可以在 Linux 容器里无人值守地跑。2.2 原有的用法不受影响。
+
+**想用这个镜像:看[使用指南](docs/USAGE-harness-dev-2.2-skillsrsi.md)。** 下面是最短的用法(在 173 上):
+
+```bash
+# 不花模型额度的自检:用“假模型”把整条流水线跑一遍,约 2 分钟
+docker run --rm --device /dev/kvm --cpus 8 --memory 16g \
+  -v /root/skillsrsi-selftest:/work/skillsrsi-selftest-out \
+  harness-dev:2.2-skillsrsi /opt/scripts/skillsrsi-selftest.sh
+
+# 用真实模型跑一轮,约 3 分钟(模型服务需要支持工具调用和 JSON 输出)
+docker run --rm --device /dev/kvm --cpus 8 --memory 16g \
+  -e SKILLS_RSI_API_KEY="你的 Key" -e SKILLS_RSI_BASE_URL="https://你的模型服务/v1" -e SKILLS_RSI_MODEL="模型名" \
+  -v /root/skillsrsi-out:/work/skillsrsi-out \
+  harness-dev:2.2-skillsrsi /opt/scripts/skillsrsi-run.sh
+```
+
+- 使用指南(机器要求、模型服务要满足什么、结果怎么读、常见问题):[docs/USAGE-harness-dev-2.2-skillsrsi.md](docs/USAGE-harness-dev-2.2-skillsrsi.md)
+- 镜像怎么做的、重建步骤、设计上的取舍:[skillsrsi/README.md](skillsrsi/README.md)
+- 在最终镜像上的自检和两轮真实运行的结论:[测试报告](docs/SKILLSRSI-IMAGE-TEST-REPORT.md)([HTML 版](docs/SKILLSRSI-IMAGE-TEST-REPORT.html))
+
+用之前要知道的三件事:
+
+1. **SkillsRSI 的发布包不在本仓库里**。它是内部项目的运行包。直接用 173 上的镜像或导出包不需要它;自己重建镜像时,需要先拿到 `skills-rsi-0.4.1.tgz`(构建时会核对 SHA-256)。
+2. **模型凭据只在运行时通过环境变量传入**。镜像、配方、结果目录里都没有凭据。
+3. **示例任务对强模型来说太简单**。实测基线都是满分,结论都是“无可执行工作项”。“改写技能”那一步还没有被真实模型走到过,详见测试报告第六节。
+
 ## 重建镜像(如需)
 
-构建上下文需要:cmdtools.zip(安卓命令行工具)、clt/(鸿蒙 CLT 26.0.0.821,去 emulator)、clt-emu/(鸿蒙 Emulator 二进制)、emu-images/(鸿蒙系统镜像 6.1.1)、start-*.sh。执行 `docker build -t harness-dev:2.1 .`。2.2 在 2.1 之上重建,步骤见 [deveco-code/README.md](deveco-code/README.md)。
+构建上下文需要:cmdtools.zip(安卓命令行工具)、clt/(鸿蒙 CLT 26.0.0.821,去 emulator)、clt-emu/(鸿蒙 Emulator 二进制)、emu-images/(鸿蒙系统镜像 6.1.1)、start-*.sh。执行 `docker build -t harness-dev:2.1 .`。2.2 在 2.1 之上重建,步骤见 [deveco-code/README.md](deveco-code/README.md);`2.2-skillsrsi` 在 2.2 之上重建,步骤见 [skillsrsi/README.md](skillsrsi/README.md)。

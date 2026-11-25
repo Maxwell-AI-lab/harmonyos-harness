@@ -1,0 +1,35 @@
+{
+  "value": {
+    "assertions": [
+      {
+        "id": "P01",
+        "status": "PASS",
+        "observed": "页面组：foreground_ok=true、reached=true，页面标志 ['OpenCalc 格式化试用','格式化'] 与安卓基线 P01.xml 的标题/输入框/分组/格式化按钮结构一致；dump 文案含 'OpenCalc 格式化试用'、'1234567.890'、'国际数位分组'、'格式化'，主要内容块齐全；hilog crash=0。视觉差异（'07'/'54' 等额外文本节点）不影响功能判定。"
+      },
+      {
+        "id": "C01",
+        "status": "PASS",
+        "observed": "点击前 dump 与 trace 显示 tap '格式化' 命中 clickable Button（bounds [488,766][768,906]，point_source=control，未走祖先），点击后截图/dump 文案含 '1,234,567.890'，与冻结 expected 及安卓基线 C01.xml 一致；非仅凭 tap 成功判定。"
+      },
+      {
+        "id": "C02",
+        "status": "PASS",
+        "observed": "先 tap '国际数位分组'（clickable Button，bounds [404,570][852,710]，point_source=control）切换分组，再 tap '格式化'（clickable Button，bounds [488,766][768,906]），等待后 dump 文案含 '12,34,567.890'，与冻结 expected 及安卓基线 C02.xml 一致；两次点击均命中对应可点击控件。"
+      }
+    ],
+    "notes": "3 条冻结断言全部 PASS：页面组 1/1，交互组 2/2，critical 项无失败。证据来自 replay.json 的 trace（点击目标为对应 clickable 控件、非祖先代理）、点击前后 dump 与截图留档，以及 hilog 无崩溃。未修改冻结旅程/页面清单，未补采。"
+  },
+  "model": "deepseek-v4-1-flash-261017",
+  "usage": {
+    "completion_tokens": 396,
+    "prompt_tokens": 7099,
+    "total_tokens": 7495,
+    "prompt_tokens_details": {
+      "cached_tokens": 4096
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "promptDigest": "52c005ae6151eb1bbc7b09c04b4877e25ad2592ba6f9615a13bd1f8ff86474aa"
+}
